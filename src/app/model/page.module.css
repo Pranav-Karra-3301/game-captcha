@@ -710,11 +710,6 @@
   opacity: 0.3;
 }
 
-/* Change from universal selector to properly scoped global selector */
-:global(*) {
-  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><rect width='12' height='12' fill='white'/></svg>"), auto;
-}
-
 /* Optional - add to buttons or interactive elements if needed */
 .viewToggleButton,
 .backLink,

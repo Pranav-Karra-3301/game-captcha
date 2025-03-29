@@ -534,6 +534,81 @@ export default function Home() {
             {/* Removed carousel dots navigation */}
           </div>
         </div>
+        
+        {/* HackPSU Team section */}
+        <div className={styles.teamSection} id="teamSection">
+          <h2 className={styles.teamTitle}>For The HACKPSU Team</h2>
+          
+          <div className={styles.teamGrid}>
+            {/* Pranav Karra */}
+            <div className={styles.teamMember}>
+              <div className={styles.teamImageContainer}>
+                <img 
+                  src="/ppl/Pranav8bit.png" 
+                  alt="Pranav Karra 8-bit" 
+                  className={styles.teamImage8bit} 
+                />
+                <img 
+                  src="/ppl/Pranav.jpg" 
+                  alt="Pranav Karra" 
+                  className={styles.teamImageReal} 
+                />
+              </div>
+              <h3 className={styles.teamMemberName}>Pranav Karra</h3>
+            </div>
+            
+            {/* Manit Garg */}
+            <div className={styles.teamMember}>
+              <div className={styles.teamImageContainer}>
+                <img 
+                  src="/ppl/Manit8bit.png" 
+                  alt="Manit Garg 8-bit" 
+                  className={styles.teamImage8bit} 
+                />
+                <img 
+                  src="/ppl/Manit.jpg" 
+                  alt="Manit Garg" 
+                  className={styles.teamImageReal} 
+                />
+              </div>
+              <h3 className={styles.teamMemberName}>Manit Garg</h3>
+            </div>
+            
+            {/* Dhruva Nagesh */}
+            <div className={styles.teamMember}>
+              <div className={styles.teamImageContainer}>
+                <img 
+                  src="/ppl/Dhruva8bit.png" 
+                  alt="Dhruva Nagesh 8-bit" 
+                  className={styles.teamImage8bit} 
+                />
+                <img 
+                  src="/ppl/Dhruva.jpg" 
+                  alt="Dhruva Nagesh" 
+                  className={styles.teamImageReal} 
+                />
+              </div>
+              <h3 className={styles.teamMemberName}>Dhruva Nagesh</h3>
+            </div>
+            
+            {/* Pihu Agarwal */}
+            <div className={styles.teamMember}>
+              <div className={styles.teamImageContainer}>
+                <img 
+                  src="/ppl/Pihu8bit.png" 
+                  alt="Pihu Agarwal 8-bit" 
+                  className={styles.teamImage8bit} 
+                />
+                <img 
+                  src="/ppl/Pihu.jpg" 
+                  alt="Pihu Agarwal" 
+                  className={styles.teamImageReal} 
+                />
+              </div>
+              <h3 className={styles.teamMemberName}>Pihu Agarwal</h3>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   );

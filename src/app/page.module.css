@@ -243,7 +243,7 @@
 /* 3D Image */
 .image3dContainer {
   position: absolute;
-  top: 20%;
+  top: 80vh;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -335,8 +335,7 @@
   }
   
   .image3dContainer {
-    top: 25%;
-    /* Center horizontally - no need for right positioning */
+    top: 28vh;
   }
   
   .image3d {
@@ -346,8 +345,7 @@
 
 @media (max-width: 480px) {
   .image3dContainer {
-    top: 30%;
-    /* Center horizontally - no need for right positioning */
+    top: 25vh;
   }
   
   .image3d {

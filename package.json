@@ -1,0 +1,44 @@
+{
+  "name": "space-trainer",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.0.5",
+    "@react-three/fiber": "^9.1.0",
+    "@supabase/supabase-js": "^2.49.3",
+    "@tailwindcss/postcss": "^4.0.17",
+    "@tanstack/react-query": "^5.69.0",
+    "@tweenjs/tween.js": "^25.0.0",
+    "autoprefixer": "^10.4.21",
+    "d3-scale": "^3.3.0",
+    "framer-motion": "^12.6.2",
+    "mermaid": "^11.6.0",
+    "next": "^15.2.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
+    "react-mermaid-js": "^0.0.1",
+    "recharts": "^2.15.1",
+    "tailwindcss": "^4.0.17",
+    "three": "^0.174.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/uuid": "^9.0.8",
+    "eslint": "^9",
+    "eslint-config-next": "15.2.4",
+    "fs-extra": "^11.3.0",
+    "ignore-loader": "^0.1.2",
+    "typescript": "^5"
+  }
+}

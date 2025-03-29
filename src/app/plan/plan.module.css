@@ -1,0 +1,356 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  overflow-x: hidden;
+  position: relative;
+  color: #fff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(to bottom, #000000, #111111);
+  min-height: 100vh;
+}
+
+/* Star background effect */
+.container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0)),
+    radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0)),
+    radial-gradient(2px 2px at 50px 160px, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0)),
+    radial-gradient(2px 2px at 90px 40px, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0)),
+    radial-gradient(2px 2px at 130px 80px, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0)),
+    radial-gradient(2px 2px at 160px 120px, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  z-index: -1;
+  animation: twinkle 5s infinite alternate;
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.navigation {
+  margin-bottom: 2rem;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ffffff;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.backLink:hover {
+  color: #cccccc;
+  text-decoration: underline;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 4rem;
+  padding: 2rem 0;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(to right, #ffffff, #999999);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: #cccccc;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.75rem;
+  font-weight: 600;
+  text-align: center;
+  position: relative;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #ffffff;
+}
+
+.sectionIcon {
+  color: #ffffff;
+  font-size: 1.5rem;
+}
+
+.comparisonSection, 
+.businessSection, 
+.marketSection, 
+.technicalSection {
+  margin-bottom: 6rem;
+  position: relative;
+}
+
+.comparisonGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .comparisonGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.revenueGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .revenueGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.card {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  padding: 1.5rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+  background: rgba(17, 17, 17, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(50, 50, 50, 0.6);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.imagePlaceholder {
+  height: 12rem;
+  background-color: rgba(20, 20, 20, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(50, 50, 50, 0.6);
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.comparisonImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.itemList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: #e0f2fe;
+}
+
+.revenueCard {
+  text-align: center;
+  border: 1px solid rgba(50, 50, 50, 0.6);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+  background: rgba(20, 20, 20, 0.7);
+  backdrop-filter: blur(10px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.revenueCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.emoji {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.revenueTitle {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.revenueDescription {
+  color: #cccccc;
+  margin-bottom: 1rem;
+}
+
+.marketData {
+  color: #ffffff;
+  font-weight: 600;
+  margin-top: auto;
+  font-size: 0.9rem;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(50, 50, 50, 0.6);
+}
+
+.diagramContainer, .chartContainer {
+  height: auto;
+  background-color: rgba(20, 20, 20, 0.7);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  border: 1px solid rgba(50, 50, 50, 0.6);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  padding: 1.5rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.diagramContent, .chartContent {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.imageContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.technicalImage {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.375rem;
+}
+
+.flowItem {
+  position: relative;
+  padding: 0.75rem;
+  margin: 0.5rem;
+  background: rgba(15, 23, 42, 0.7);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(125, 211, 252, 0.2);
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 200px;
+  text-align: center;
+}
+
+.flowArrow {
+  width: 40px;
+  height: 2px;
+  background: rgba(125, 211, 252, 0.6);
+  position: relative;
+}
+
+.flowArrow:after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -4px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid rgba(125, 211, 252, 0.6);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+
+.comparisonItem {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(125, 211, 252, 0.1);
+}
+
+.comparisonText {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.ctaSection {
+  margin-top: 4rem;
+}
+
+.ctaContainer {
+  text-align: center;
+  padding: 2.5rem;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(125, 211, 252, 0.2);
+  box-shadow: 0 4px 20px rgba(125, 211, 252, 0.2);
+}
+
+.ctaTitle {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  font-family: var(--font-orbitron), sans-serif;
+  color: #e0f2fe;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to right, #7dd3fc, #c4b5fd);
+  color: #0f172a;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  font-family: var(--font-space-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ctaButton:hover {
+  background: linear-gradient(to right, #38bdf8, #a78bfa);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(125, 211, 252, 0.4);
+} 

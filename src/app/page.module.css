@@ -1,0 +1,960 @@
+.page {
+  --gray-rgb: 0, 0, 0;
+  --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
+  --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
+
+  --button-primary-hover: #383838;
+  --button-secondary-hover: #f2f2f2;
+
+  display: grid;
+  grid-template-rows: 20px 1fr 20px;
+  align-items: center;
+  justify-items: center;
+  min-height: 100svh;
+  padding: 80px;
+  gap: 64px;
+  font-family: var(--font-geist-sans);
+}
+
+@media (prefers-color-scheme: dark) {
+  .page {
+    --gray-rgb: 255, 255, 255;
+    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
+    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
+
+    --button-primary-hover: #ccc;
+    --button-secondary-hover: #1a1a1a;
+  }
+}
+
+.main {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+/* Space background */
+.stars, .twinkling, .clouds {
+  position: fixed;
+  display: block;
+  top: 0; 
+  bottom: 0;
+  left: 0; 
+  right: 0;
+  width: 100%; 
+  height: 100%;
+  pointer-events: none;
+}
+
+.stars {
+  z-index: 0;
+  background: #000 url('/stars.png') repeat top center;
+}
+
+.twinkling {
+  z-index: 1;
+  background: transparent url('/twinkling.png') repeat top center;
+  animation: move-twink-back 200s linear infinite;
+}
+
+.clouds {
+  z-index: 2;
+  background: transparent url('/clouds.png') repeat top center;
+  animation: move-clouds-back 200s linear infinite;
+}
+
+@keyframes move-twink-back {
+  from {background-position: 0 0;}
+  to {background-position: -10000px 5000px;}
+}
+
+@keyframes move-clouds-back {
+  from {background-position: 0 0;}
+  to {background-position: 10000px 0;}
+}
+
+/* 3D model background */
+.modelBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 3;
+  /* Ensure 3D model has transparent background */
+  background-color: transparent !important;
+}
+
+/* Content overlay */
+.contentOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10vh;
+  padding-bottom: 5rem;
+  pointer-events: none; /* Allow clicking through to model */
+}
+
+/* HackPSU emblem */
+.hackpsuEmblem {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000; /* Above everything else */
+  width: 100px;
+  height: auto;
+  pointer-events: none; /* Don't block clicks */
+}
+
+.hackpsuEmblem img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
+}
+
+/* Mute button */
+.muteButton {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: white;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+  outline: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.muteButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(-50%) scale(1.05);
+}
+
+/* Logo styles */
+.logoContainer {
+  margin-bottom: 2rem;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo {
+  max-width: 200px;
+  height: auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+/* Make interactive elements clickable again */
+.title, .navbar {
+  pointer-events: auto;
+}
+
+.title {
+  font-size: 4rem;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 3rem;
+  color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 1.5rem 2.5rem;
+  border-radius: 20px;
+  line-height: 1.2;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  image-rendering: pixelated;
+  background: rgba(255, 255, 255, 0.1);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.navbar {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 50px;
+  padding: 0.8rem 1.2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.navbar ul {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+}
+
+.navbar li {
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  letter-spacing: 1px;
+}
+
+.navbar li:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.navbar li.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* 3D Image */
+.image3dContainer {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  pointer-events: auto;
+  z-index: 5;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
+.image3d {
+  max-width: 80px;
+  height: auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+@keyframes floatIcon {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: white;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  background: rgba(220, 38, 38, 0.2);
+  color: white;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.error button {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.error button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Update responsive styles for 3D icon */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.5rem;
+    padding: 1rem 1.5rem;
+    margin-top: 2rem;
+  }
+  
+  .logo {
+    max-width: 150px;
+  }
+  
+  .navbar {
+    padding: 0.5rem 0.8rem;
+  }
+  
+  .navbar li {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .image3dContainer {
+    top: 25%;
+    /* Center horizontally - no need for right positioning */
+  }
+  
+  .image3d {
+    max-width: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .image3dContainer {
+    top: 30%;
+    /* Center horizontally - no need for right positioning */
+  }
+  
+  .image3d {
+    max-width: 50px;
+  }
+}
+
+.main ol {
+  font-family: var(--font-geist-mono);
+  padding-left: 0;
+  margin: 0;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  list-style-position: inside;
+}
+
+.main li:not(:last-of-type) {
+  margin-bottom: 8px;
+}
+
+.main code {
+  font-family: inherit;
+  background: var(--gray-alpha-100);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.ctas {
+  display: flex;
+  gap: 16px;
+}
+
+.ctas a {
+  appearance: none;
+  border-radius: 128px;
+  height: 48px;
+  padding: 0 20px;
+  border: none;
+  border: 1px solid transparent;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+a.primary {
+  background: var(--foreground);
+  color: var(--background);
+  gap: 8px;
+}
+
+a.secondary {
+  border-color: var(--gray-alpha-200);
+  min-width: 158px;
+}
+
+.footer {
+  grid-row-start: 3;
+  display: flex;
+  gap: 24px;
+}
+
+.footer a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer img {
+  flex-shrink: 0;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+  a.primary:hover {
+    background: var(--button-primary-hover);
+    border-color: transparent;
+  }
+
+  a.secondary:hover {
+    background: var(--button-secondary-hover);
+    border-color: transparent;
+  }
+
+  .footer a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 32px;
+    padding-bottom: 80px;
+  }
+
+  .main {
+    align-items: center;
+  }
+
+  .main ol {
+    text-align: center;
+  }
+
+  .ctas {
+    flex-direction: column;
+  }
+
+  .ctas a {
+    font-size: 14px;
+    height: 40px;
+    padding: 0 16px;
+  }
+
+  a.secondary {
+    min-width: auto;
+  }
+
+  .footer {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .logo {
+    filter: invert();
+  }
+}
+
+/* Sound notification */
+.soundNotification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.soundNotification p {
+  margin: 0;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  font-size: 1rem;
+}
+
+.soundNotification button {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+}
+
+.soundNotification button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* Captcha Section Styles */
+.captchaSection {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 2rem;
+  margin-top: 5rem;
+  pointer-events: auto;
+}
+
+.captchaContainer {
+  display: flex;
+  max-width: 1200px;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+  padding: 3rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.captchaImageContainer {
+  flex: 1;
+  padding-right: 2rem;
+}
+
+.captchaImage {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.captchaTextContainer {
+  flex: 1;
+  padding-left: 2rem;
+}
+
+.captchaTitle {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2rem;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.captchaList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  line-height: 1.6;
+}
+
+.captchaList li {
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive styles for the captcha section */
+@media (max-width: 1100px) {
+  .captchaContainer {
+    flex-direction: column;
+    padding: 2rem;
+  }
+  
+  .captchaImageContainer {
+    padding-right: 0;
+    padding-bottom: 2rem;
+    width: 100%;
+  }
+  
+  .captchaTextContainer {
+    padding-left: 0;
+    width: 100%;
+  }
+
+  .captchaTitle {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .captchaList {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .captchaSection {
+    padding: 3rem 1rem;
+  }
+  
+  .captchaContainer {
+    padding: 1.5rem;
+  }
+  
+  .captchaTitle {
+    font-size: 2rem;
+  }
+  
+  .captchaList {
+    font-size: 1.2rem;
+  }
+}
+
+/* Multi-Game Support Section Styles */
+.gamesSection {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 2rem;
+  margin-top: 2rem;
+  pointer-events: auto;
+}
+
+.gamesTitle {
+  font-size: 4rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 4rem;
+  text-align: center;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 1.5rem 2.5rem;
+  border-radius: 20px;
+}
+
+.gamesCarousel {
+  width: 100%;
+  max-width: 1400px;
+  position: relative;
+  padding: 2rem 0;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.carouselTrack {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none; /* Firefox */
+  padding: 1rem 2rem;
+  gap: 2rem;
+}
+
+.carouselTrack::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.gameCard {
+  flex: 0 0 300px;
+  scroll-snap-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  height: 360px; /* Set fixed height for consistent cards */
+  justify-content: space-between;
+}
+
+/* Special styles for the Space Invaders card */
+.gameCard:first-child {
+  cursor: pointer; /* Ensure cursor shows it's clickable */
+}
+
+.gameCard:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Regular cards should still have their hover effect */
+.gameCard:not(:first-child):hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Regular cards should still have their hover glow effect */
+.gameCard:not(:first-child):hover::before {
+  opacity: 0.5;
+}
+
+.gameImageContainer {
+  width: 100%;
+  height: 180px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gameImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.5s ease;
+}
+
+.gameCard:hover .gameImage {
+  transform: scale(1.05);
+}
+
+.gameName {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: white;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  letter-spacing: 1px;
+}
+
+.gameDescription {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  letter-spacing: 0.5px;
+  margin-bottom: 1rem;
+}
+
+.gameStatus {
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: auto;
+}
+
+/* Available Now status */
+.gameCard:nth-child(1) .gameStatus {
+  background: rgba(58, 214, 105, 0.2);
+  color: rgb(58, 214, 105);
+  border: 1px solid rgba(58, 214, 105, 0.4);
+}
+
+/* Coming Soon status */
+.gameCard:nth-child(n+2) .gameStatus {
+  background: rgba(112, 129, 255, 0.2);
+  color: rgb(151, 164, 255);
+  border: 1px solid rgba(112, 129, 255, 0.4);
+}
+
+/* Add gradient glow effect to cards */
+.gameCard::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #ff00cc, #3333ff, #00ffff, #33cc33);
+  z-index: -1;
+  filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 16px;
+}
+
+.gameCard:hover::before {
+  opacity: 0.5;
+}
+
+/* Link wrapper for game cards */
+.gameLinkWrapper {
+  flex: 0 0 300px;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+}
+
+/* Special hover effect for the clickable Space Invaders card */
+.gameLinkWrapper:hover .gameCard {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(58, 214, 105, 0.5);
+  box-shadow: 0 10px 30px rgba(58, 214, 105, 0.3);
+}
+
+.gameLinkWrapper:hover .gameImage {
+  transform: scale(1.05);
+}
+
+.gameLinkWrapper:hover::before {
+  opacity: 0.5;
+}
+
+.gameLinkWrapper::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #3ad669, #33cc33, #00ffff, #33cc77);
+  z-index: -1;
+  filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 16px;
+}
+
+/* Responsive styles for the games section */
+@media (max-width: 1200px) {
+  .gameCard {
+    flex: 0 0 250px;
+  }
+  
+  .gameLinkWrapper {
+    flex: 0 0 250px;
+  }
+  
+  .gameImageContainer {
+    height: 150px;
+  }
+  
+  .gamesTitle {
+    font-size: 3.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .gamesTitle {
+    font-size: 2.5rem;
+    padding: 1rem 1.5rem;
+  }
+  
+  .gameCard {
+    flex: 0 0 220px;
+    padding: 1rem;
+  }
+  
+  .gameLinkWrapper {
+    flex: 0 0 220px;
+  }
+  
+  .gameImageContainer {
+    height: 130px;
+    margin-bottom: 1rem;
+  }
+  
+  .gameName {
+    font-size: 1.4rem;
+  }
+  
+  .gameDescription {
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .gameStatus {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.8rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .gamesSection {
+    padding: 3rem 1rem;
+  }
+  
+  .gamesTitle {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .carouselTrack {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .gameCard {
+    flex: 0 0 180px;
+  }
+  
+  .gameLinkWrapper {
+    flex: 0 0 180px;
+  }
+  
+  .gameImageContainer {
+    height: 110px;
+  }
+  
+  .gameName {
+    font-size: 1.2rem;
+  }
+  
+  .gameDescription {
+    font-size: 0.8rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  .gameStatus {
+    font-size: 0.6rem;
+    padding: 0.2rem 0.6rem;
+  }
+}

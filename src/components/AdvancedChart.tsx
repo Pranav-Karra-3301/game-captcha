@@ -50,7 +50,8 @@ const AdvancedChart: React.FC<AdvancedChartProps> = ({
     );
   }
   
-  const gradientId = `chart-gradient-${Math.random().toString(36).substr(2, 9)}`;
+  // Use a fixed ID instead of a random one to prevent hydration issues
+  const gradientId = 'chart-gradient-fixed';
   const maxValue = Math.max(...data.map(d => d.value));
   const minValue = Math.min(...data.map(d => d.value));
   const range = maxValue - minValue;
@@ -285,8 +286,8 @@ const AdvancedChart: React.FC<AdvancedChartProps> = ({
             const midAngle = startAngle + angle / 2;
             const midRad = (midAngle * Math.PI) / 180;
             const labelRadius = radius * 1.2;
-            const labelX = labelRadius * Math.sin(midRad);
-            const labelY = -labelRadius * Math.cos(midRad);
+            const labelX = Number(labelRadius * Math.sin(midRad));
+            const labelY = Number(-labelRadius * Math.cos(midRad));
             
             const isHovered = hoveredIndex === i;
             const customColor = Array.isArray(color) ? color[i % color.length] : 
@@ -314,17 +315,17 @@ const AdvancedChart: React.FC<AdvancedChartProps> = ({
                 {showLabels && angle > 15 && (
                   <>
                     <line
-                      x1={x1 * 0.8}
-                      y1={y1 * 0.8}
-                      x2={labelX}
-                      y2={labelY}
+                      x1={Number(x1 * 0.8)}
+                      y1={Number(y1 * 0.8)}
+                      x2={Number(labelX)}
+                      y2={Number(labelY)}
                       stroke="rgba(255,255,255,0.5)"
                       strokeWidth="0.5"
                       opacity={isHovered ? 1 : 0.6}
                     />
                     <text
-                      x={labelX * 1.1}
-                      y={labelY * 1.1}
+                      x={Number(labelX * 1.1)}
+                      y={Number(labelY * 1.1)}
                       textAnchor={midAngle > 180 ? "end" : "start"}
                       fill="rgba(255,255,255,0.8)"
                       fontSize="6"

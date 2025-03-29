@@ -1149,35 +1149,25 @@ a.secondary {
   border-radius: 20px;
 }
 
-.techCarousel {
+.techGrid {
   width: 100%;
   max-width: 1400px;
   position: relative;
-  padding: 2rem 0;
+  padding: 3rem;
   background: rgba(0, 0, 0, 0.4);
   border-radius: 20px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.techCarouselTrack {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none; /* Firefox */
-  padding: 1rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
 }
 
-.techCarouselTrack::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
-}
-
 .techCard {
-  flex: 0 0 250px;
-  scroll-snap-align: center;
+  flex: none;
+  scroll-snap-align: none;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 15px;
   padding: 1.5rem;
@@ -1191,7 +1181,7 @@ a.secondary {
   position: relative;
   z-index: 1;
   overflow: hidden;
-  height: 240px; /* Set fixed height for consistent cards */
+  height: 200px;
   justify-content: center;
 }
 
@@ -1238,33 +1228,21 @@ a.secondary {
 
 /* Responsive styles for the tech section */
 @media (max-width: 1200px) {
-  .techCard {
-    flex: 0 0 220px;
-  }
-  
-  .techTitle {
-    font-size: 3.5rem;
+  .techGrid {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 2rem;
   }
 }
 
 @media (max-width: 768px) {
-  .techTitle {
-    font-size: 2.5rem;
-    padding: 1rem 1.5rem;
+  .techGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
   
   .techCard {
-    flex: 0 0 200px;
+    height: 180px;
     padding: 1rem;
-    height: 200px;
-  }
-  
-  .techName {
-    font-size: 1.8rem;
-  }
-  
-  .techPurpose {
-    font-size: 1rem;
   }
 }
 
@@ -1278,14 +1256,29 @@ a.secondary {
     margin-bottom: 2rem;
   }
   
-  .techCarouselTrack {
-    padding: 1rem;
-    gap: 1rem;
+  .techGrid {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
   }
   
   .techCard {
-    flex: 0 0 180px;
-    height: 180px;
+    flex: none;
+    scroll-snap-align: none;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    height: 200px;
+    justify-content: center;
   }
   
   .techName {
@@ -1295,4 +1288,43 @@ a.secondary {
   .techPurpose {
     font-size: 0.9rem;
   }
+}
+
+/* Carousel Navigation Arrows */
+.carouselArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.3s ease;
+  z-index: 10;
+  pointer-events: auto;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.carouselArrowLeft {
+  left: 20px;
+}
+
+.carouselArrowRight {
+  right: 20px;
+}
+
+.gamesCarousel:hover .carouselArrow {
+  opacity: 0.7;
+}
+
+.carouselArrow:hover {
+  opacity: 1 !important;
+  background: rgba(0, 0, 0, 0.7);
 }

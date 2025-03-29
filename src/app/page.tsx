@@ -477,6 +477,19 @@ export default function Home() {
           <h2 className={styles.gamesTitle}>Multi-Game Support</h2>
           
           <div className={styles.gamesCarousel}>
+            {/* Left Navigation Arrow */}
+            <div 
+              className={`${styles.carouselArrow} ${styles.carouselArrowLeft}`}
+              onClick={() => {
+                const track = document.querySelector(`.${styles.carouselTrack}`);
+                if (track) {
+                  track.scrollBy({ left: -600, behavior: 'smooth' });
+                }
+              }}
+            >
+              &#10094;
+            </div>
+            
             <div className={styles.carouselTrack}>
               {/* Game Card - Space Invaders (Current) */}
               <Link href="/play" className={styles.gameLinkWrapper}>
@@ -531,7 +544,18 @@ export default function Home() {
               </div>
             </div>
             
-            {/* Removed carousel dots navigation */}
+            {/* Right Navigation Arrow */}
+            <div 
+              className={`${styles.carouselArrow} ${styles.carouselArrowRight}`}
+              onClick={() => {
+                const track = document.querySelector(`.${styles.carouselTrack}`);
+                if (track) {
+                  track.scrollBy({ left: 600, behavior: 'smooth' });
+                }
+              }}
+            >
+              &#10095;
+            </div>
           </div>
         </div>
         
@@ -614,79 +638,77 @@ export default function Home() {
         <div className={styles.techSection} id="techSection">
           <h2 className={styles.techTitle}>Technologies Used</h2>
           
-          <div className={styles.techCarousel}>
-            <div className={styles.techCarouselTrack}>
-              {/* Cursor */}
-              <div className={styles.techCard}>
-                <h3 className={styles.techName}>Cursor</h3>
-                <p className={styles.techPurpose}>For Code</p>
-              </div>
-              
-              {/* Modal */}
-              <div className={styles.techCard}>
-                <h3 className={styles.techName}>Modal</h3>
-                <p className={styles.techPurpose}>Training</p>
-              </div>
-              
-              {/* Node.js */}
-              <div className={styles.techCard}>
-                <h3 className={styles.techName}>Node.js</h3>
-                <p className={styles.techPurpose}>Web</p>
-              </div>
-              
-              {/* Supabase */}
-              <div className={styles.techCard}>
-                <h3 className={styles.techName}>Supabase</h3>
-                <p className={styles.techPurpose}>Database</p>
-              </div>
-              
-              {/* Railway */}
-              <div className={styles.techCard}>
-                <h3 className={styles.techName}>Railway</h3>
-                <p className={styles.techPurpose}>Backend</p>
-              </div>
-              
-              {/* Phaser.js */}
-              <div className={styles.techCard}>
-                <h3 className={styles.techName}>Phaser.js</h3>
-                <p className={styles.techPurpose}>Game Engine</p>
-              </div>
-              
-              {/* Framer */}
-              <div className={styles.techCard}>
-                <h3 className={styles.techName}>Framer</h3>
-                <p className={styles.techPurpose}>Animation</p>
-              </div>
-              
-              {/* Claude */}
-              <div className={styles.techCard}>
-                <h3 className={styles.techName}>Claude</h3>
-                <p className={styles.techPurpose}>Component Generation</p>
-              </div>
-              
-              {/* Canva */}
-              <div className={styles.techCard}>
-                <h3 className={styles.techName}>Canva</h3>
-                <p className={styles.techPurpose}>Ideation</p>
-              </div>
-              
-              {/* Figma */}
-              <div className={styles.techCard}>
-                <h3 className={styles.techName}>Figma</h3>
-                <p className={styles.techPurpose}>Prototypes</p>
-              </div>
-              
-              {/* ChatGPT 4o */}
-              <div className={styles.techCard}>
-                <h3 className={styles.techName}>ChatGPT 4o</h3>
-                <p className={styles.techPurpose}>Image Generation</p>
-              </div>
-              
-              {/* Three.js */}
-              <div className={styles.techCard}>
-                <h3 className={styles.techName}>Three.js</h3>
-                <p className={styles.techPurpose}>3D Web Model</p>
-              </div>
+          <div className={styles.techGrid}>
+            {/* Cursor */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Cursor</h3>
+              <p className={styles.techPurpose}>For Code</p>
+            </div>
+            
+            {/* Modal */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Modal</h3>
+              <p className={styles.techPurpose}>Training</p>
+            </div>
+            
+            {/* Node.js */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Node.js</h3>
+              <p className={styles.techPurpose}>Web</p>
+            </div>
+            
+            {/* Supabase */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Supabase</h3>
+              <p className={styles.techPurpose}>Database</p>
+            </div>
+            
+            {/* Railway */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Railway</h3>
+              <p className={styles.techPurpose}>Backend</p>
+            </div>
+            
+            {/* Phaser.js */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Phaser.js</h3>
+              <p className={styles.techPurpose}>Game Engine</p>
+            </div>
+            
+            {/* Framer */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Framer</h3>
+              <p className={styles.techPurpose}>Animation</p>
+            </div>
+            
+            {/* Claude */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Claude</h3>
+              <p className={styles.techPurpose}>Component Generation</p>
+            </div>
+            
+            {/* Canva */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Canva</h3>
+              <p className={styles.techPurpose}>Ideation</p>
+            </div>
+            
+            {/* Figma */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Figma</h3>
+              <p className={styles.techPurpose}>Prototypes</p>
+            </div>
+            
+            {/* ChatGPT 4o */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>ChatGPT 4o</h3>
+              <p className={styles.techPurpose}>Image Generation</p>
+            </div>
+            
+            {/* Three.js */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Three.js</h3>
+              <p className={styles.techPurpose}>3D Web Model</p>
             </div>
           </div>
         </div>

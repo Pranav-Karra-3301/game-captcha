@@ -473,6 +473,24 @@ export default function Home() {
           </div>
         </div>
         
+        {/* Improved Captcha section */}
+        <div className={styles.captchaImprovedSection} id="captchaImprovedSection">
+          <div className={styles.captchaImprovedContainer}>
+            <div className={styles.captchaImprovedImageContainer}>
+              <img src="/captchaImproved.png" alt="Improved Captcha Example" className={styles.captchaImprovedImage} />
+            </div>
+            <div className={styles.captchaImprovedTextContainer}>
+              <h2 className={styles.captchaImprovedTitle}>The Captcha She Told You Not To Worry About</h2>
+              <ul className={styles.captchaImprovedList}>
+                <li>Our Captcha is:</li>
+                <li>• Fun and Engaging</li>
+                <li>• Trains AI Models Directly</li>
+                <li>• Open Source</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
         {/* Multi-Game Support section */}
         <div className={styles.gamesSection} id="gamesSection">
           <h2 className={styles.gamesTitle}>Multi-Game Support</h2>

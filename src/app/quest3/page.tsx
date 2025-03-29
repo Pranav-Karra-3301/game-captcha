@@ -20,11 +20,13 @@ export default function Quest3Page() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.stars}></div>
-      <h1 className={styles.title}>Meta Quest 3 Edition</h1>
-      <QuestGameComponent />
-      <div className={styles.controlsInfo}>
-        <p>Controls: Move with mouse, shoot with left click</p>
+      <div className={styles.gameWrapper}>
+        <div className={styles.stars}></div>
+        <h1 className={styles.title}>Meta Quest 3 Edition</h1>
+        <QuestGameComponent />
+        <div className={styles.controlsInfo}>
+          <p>Controls: Move with mouse, shoot with left click</p>
+        </div>
       </div>
       <Link href="/" className={styles.backButton}>
         Back to Home

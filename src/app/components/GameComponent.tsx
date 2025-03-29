@@ -3,45 +3,14 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from './GameComponent.module.css';
 
-// Define local interfaces for game data tracking
-interface GameEvent {
-  session_id: string;
-  event_type: string;
-  event_time?: Date;
-  position_x?: number;
-  position_y?: number;
-  score_at_event?: number;
-  lives_remaining?: number;
-  additional_data?: any;
-}
-
-interface PlayerInput {
-  session_id: string;
-  input_type: string;
-  input_key: string;
-  timestamp?: Date;
-}
-
-interface PlayerPosition {
-  session_id: string;
-  position_x: number;
-  position_y: number;
-  timestamp?: Date;
-}
-
+// Using type augmentation would require changes to other files
+// so we'll use a local interface instead
 interface GameWindow {
   gameInstance?: {
     destroy: (removeCanvas?: boolean) => void;
   } | null;
   gameInitialized?: boolean;
   initGame?: () => void;
-  gameSessionId?: string;
-  recordGameEvent?: (event: GameEvent) => void;
-  recordPlayerInput?: (input: PlayerInput) => void;
-  recordPlayerPosition?: (position: PlayerPosition) => void;
-  gameEventBuffer?: GameEvent[];
-  playerInputBuffer?: PlayerInput[];
-  playerPositionBuffer?: PlayerPosition[];
 }
 
 export default function GameComponent() {
@@ -52,50 +21,6 @@ export default function GameComponent() {
   const [loadingState, setLoadingState] = useState<'loading' | 'loaded' | 'error'>('loading');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [logs, setLogs] = useState<{text: string, type: 'enemy-killed' | 'enemy-missed' | 'life-lost' | 'info'}[]>([]);
-  const [sessionId, setSessionId] = useState<string | null>('local-session');
-
-  // Create a local game session when component mounts
-  useEffect(() => {
-    const createGameSession = async () => {
-      try {
-        const newSessionId = 'local-session-' + Date.now();
-        setSessionId(newSessionId);
-        
-        if (typeof window !== 'undefined') {
-          const gameWindow = window as unknown as GameWindow;
-          gameWindow.gameSessionId = newSessionId;
-          
-          // Initialize buffers for local storage
-          gameWindow.gameEventBuffer = [];
-          gameWindow.playerInputBuffer = [];
-          gameWindow.playerPositionBuffer = [];
-          
-          // Add methods to record game data locally
-          gameWindow.recordGameEvent = (event: GameEvent) => {
-            event.session_id = newSessionId;
-            gameWindow.gameEventBuffer?.push(event);
-            console.log('Game event:', event);
-          };
-          
-          gameWindow.recordPlayerInput = (input: PlayerInput) => {
-            input.session_id = newSessionId;
-            gameWindow.playerInputBuffer?.push(input);
-            console.log('Player input:', input);
-          };
-          
-          gameWindow.recordPlayerPosition = (position: PlayerPosition) => {
-            position.session_id = newSessionId;
-            gameWindow.playerPositionBuffer?.push(position);
-            console.log('Player position:', position);
-          };
-        }
-      } catch (error) {
-        console.error('Error creating local game session:', error);
-      }
-    };
-    
-    createGameSession();
-  }, []);
 
   // Check if required files exist
   useEffect(() => {
@@ -213,7 +138,7 @@ export default function GameComponent() {
           console.error('Phaser loading timed out after 8 seconds');
           setErrorMessage('Failed to load game engine (timeout). Please check your network connection and try again.');
           setLoadingState('error');
-        }, 8000);
+        }, 8000); // Increased from 5s to 8s
         
         // Handle Phaser loading error
         phaser.onerror = (err) => {
@@ -274,7 +199,7 @@ export default function GameComponent() {
       
       // Set a max retry count and interval
       let retries = 0;
-      const maxRetries = 30;
+      const maxRetries = 30; // Increased from 20 to 30 (15 seconds max wait)
       
       const checkInterval = setInterval(() => {
         retries++;
@@ -284,7 +209,7 @@ export default function GameComponent() {
         if (gameWindow.gameInitialized || (gameWindow.gameInstance && document.querySelector('#game-container canvas'))) {
           console.log('Game initialization detected!');
           clearInterval(checkInterval);
-          gameWindow.gameInitialized = true;
+          gameWindow.gameInitialized = true; // Force flag to be set
           gameScriptsLoadedRef.current = true;
           setLoadingState('loaded');
         } else if (retries >= maxRetries) {
@@ -296,7 +221,7 @@ export default function GameComponent() {
       }, 500);
     };
 
-    // Increased delay to ensure DOM is ready
+    // Increased delay to ensure DOM is ready (from 200ms to 500ms)
     setTimeout(loadGame, 500);
 
     // Cleanup function
@@ -335,29 +260,6 @@ export default function GameComponent() {
           
           // Auto scroll to bottom
           scrollToBottom();
-          
-          // Record game event locally if session exists
-          if (sessionId && typeof window !== 'undefined') {
-            const gameWindow = window as unknown as GameWindow;
-            if (gameWindow.recordGameEvent) {
-              const gameEvent: GameEvent = {
-                session_id: sessionId,
-                event_type: detail.type,
-                event_time: new Date(),
-                score_at_event: (window as any).score,
-                lives_remaining: (window as any).lives,
-                additional_data: { message: detail.message }
-              };
-              
-              // Record position if available
-              if ((window as any).player) {
-                gameEvent.position_x = (window as any).player.x;
-                gameEvent.position_y = (window as any).player.y;
-              }
-              
-              gameWindow.recordGameEvent(gameEvent);
-            }
-          }
         }
       };
       
@@ -385,95 +287,28 @@ export default function GameComponent() {
           
           setLogs(prev => [...prev.slice(-49), newLog]);
           scrollToBottom();
-          
-          // Record keyboard input locally
-          if (sessionId && typeof window !== 'undefined') {
-            const gameWindow = window as unknown as GameWindow;
-            if (gameWindow.recordPlayerInput) {
-              const playerInput: PlayerInput = {
-                session_id: sessionId,
-                input_type: 'keydown',
-                input_key: keyName,
-                timestamp: new Date()
-              };
-              
-              gameWindow.recordPlayerInput(playerInput);
-            }
-          }
         }
       };
-      
-      // Track player position periodically
-      if (sessionId && typeof window !== 'undefined') {
-        const gameWindow = window as unknown as GameWindow;
-        const recordPositionInterval = setInterval(() => {
-          if ((window as any).player && (window as any).gameState === 'playing' && gameWindow.recordPlayerPosition) {
-            const playerPosition: PlayerPosition = {
-              session_id: sessionId,
-              position_x: (window as any).player.x,
-              position_y: (window as any).player.y,
-              timestamp: new Date()
-            };
-            
-            gameWindow.recordPlayerPosition(playerPosition);
-          }
-        }, 200);
-        
-        // Clean up position interval
-        return () => {
-          clearInterval(recordPositionInterval);
-        };
-      }
 
       // Add global event listeners
       window.addEventListener('gamelog', handleGameEvent as EventListener);
       window.addEventListener('keydown', trackKeyboard);
       
       // Expose log function to window for the game to use
-      (window as any).reactLogGameEvent = (message: string, type: 'enemy-killed' | 'enemy-missed' | 'life-lost' | 'info') => {
-        try {
-          const event = new CustomEvent('gamelog', { 
-            detail: { message, type } 
-          });
-          window.dispatchEvent(event);
-        } catch (error) {
-          console.error('Error logging game event:', error);
-        }
+      (window as any).logGameEvent = (message: string, type: 'enemy-killed' | 'enemy-missed' | 'life-lost' | 'info') => {
+        const event = new CustomEvent('gamelog', { 
+          detail: { message, type } 
+        });
+        window.dispatchEvent(event);
       };
-      
-      // Handle game end event
-      window.addEventListener('gameend', async (event: Event) => {
-        const customEvent = event as CustomEvent;
-        if (sessionId && customEvent.detail) {
-          const { score, enemiesKilled, enemiesMissed, lives, outcome } = customEvent.detail;
-          
-          // Calculate game duration
-          const startTime = (window as any).gameStartTime || Date.now();
-          const endTime = Date.now();
-          const durationSeconds = Math.floor((endTime - startTime) / 1000);
-          
-          // Log game results locally
-          console.log('Game ended:', {
-            id: sessionId,
-            end_time: new Date(),
-            duration_seconds: durationSeconds,
-            final_score: score || 0,
-            enemies_killed: enemiesKilled || 0,
-            enemies_missed: enemiesMissed || 0,
-            lives_remaining: lives || 0,
-            game_outcome: (outcome as 'win' | 'loss' | 'quit') || 'loss'
-          });
-        }
-      });
       
       return () => {
         window.removeEventListener('gamelog', handleGameEvent as EventListener);
         window.removeEventListener('keydown', trackKeyboard);
-        window.removeEventListener('gameend', () => {});
-        (window as any).reactLogGameEvent = undefined;
+        (window as any).logGameEvent = undefined;
       };
     }
-  }, [loadingState, sessionId]);
+  }, [loadingState]);
 
   // Render loading state, error, or game container
   return (

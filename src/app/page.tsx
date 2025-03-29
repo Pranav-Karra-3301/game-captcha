@@ -422,17 +422,17 @@ export default function Home() {
         <nav className={styles.navbar}>
           <ul>
             <li className={activeNav === "play" ? styles.active : ""}>
-              <Link href="/play" onClick={() => setActiveNav("play")}>
+              <Link href="/play" onClick={() => setActiveNav("play")} prefetch={true} aria-label="Play the game">
                 Play Game
               </Link>
             </li>
             <li className={activeNav === "quest3" ? styles.active : ""}>
-              <Link href="/quest3" onClick={() => setActiveNav("quest3")}>
+              <Link href="/quest3" onClick={() => setActiveNav("quest3")} prefetch={true} aria-label="Go to Quest 3">
                 Quest 3
               </Link>
             </li>
             <li className={activeNav === "model" ? styles.active : ""}>
-              <Link href="/model" onClick={() => setActiveNav("model")}>
+              <Link href="/model" onClick={() => setActiveNav("model")} prefetch={true} aria-label="View the model">
                 Model
               </Link>
             </li>
@@ -457,7 +457,12 @@ export default function Home() {
         <div className={styles.captchaSection} id="captchaSection">
           <div className={styles.captchaContainer}>
             <div className={styles.captchaImageContainer}>
-              <img src="/captcha.png" alt="Captcha Example" className={styles.captchaImage} />
+              <img 
+                src="/captcha.png" 
+                alt="Captcha Example" 
+                className={styles.captchaImage}
+                loading="lazy" 
+              />
             </div>
             <div className={styles.captchaTextContainer}>
               <h2 className={styles.captchaTitle}>Replace Captcha</h2>
@@ -493,10 +498,17 @@ export default function Home() {
             
             <div className={styles.carouselTrack}>
               {/* Game Card - Space Invaders (Current) */}
-              <Link href="/play" className={styles.gameLinkWrapper}>
+              <Link href="/play" className={styles.gameLinkWrapper} prefetch={true} aria-label="Play Space Invaders">
                 <div className={styles.gameCard}>
                   <div className={styles.gameImageContainer}>
-                    <img src="/spaceInvaders.png" alt="Space Invaders" className={styles.gameImage} />
+                    <img 
+                      src="/spaceInvaders.png" 
+                      alt="Space Invaders" 
+                      className={styles.gameImage}
+                      loading="lazy" 
+                      width="150"
+                      height="100"
+                    />
                   </div>
                   <h3 className={styles.gameName}>Space Invaders</h3>
                   <p className={styles.gameDescription}>Classic arcade shoot 'em up game</p>

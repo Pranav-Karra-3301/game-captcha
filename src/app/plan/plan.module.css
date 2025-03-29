@@ -1,5 +1,5 @@
 /* Star background effect - now fixed for the entire page */
-body {
+.page {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -8,7 +8,7 @@ body {
   position: relative;
 }
 
-body::before {
+.starsBackground {
   content: '';
   position: fixed;
   top: 0;

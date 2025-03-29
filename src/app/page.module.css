@@ -100,22 +100,35 @@
   flex-direction: column;
   align-items: center;
   padding-top: 10vh;
-  padding-bottom: 5rem;
+  padding-bottom: 0;
   pointer-events: none; /* Allow clicking through to model */
 }
 
 /* HackPSU emblem */
-.hackpsuEmblem {
-  position: fixed;
+.emblemContainer {
+  position: absolute;
   top: 20px;
   left: 20px;
+  display: flex;
+  gap: 15px;
   z-index: 1000; /* Above everything else */
-  width: 100px;
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 15px;
+  padding: 10px 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.hackpsuEmblem, .metaquestEmblem {
+  width: 90px; /* 10% smaller than original 100px */
   height: auto;
   pointer-events: none; /* Don't block clicks */
 }
 
-.hackpsuEmblem img {
+.hackpsuEmblem img, .metaquestEmblem img {
   width: 100%;
   height: auto;
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
@@ -230,7 +243,7 @@
 /* 3D Image */
 .image3dContainer {
   position: absolute;
-  top: 20%;
+  top: 80vh; 
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -322,8 +335,7 @@
   }
   
   .image3dContainer {
-    top: 25%;
-    /* Center horizontally - no need for right positioning */
+    top: 28vh;
   }
   
   .image3d {
@@ -333,8 +345,7 @@
 
 @media (max-width: 480px) {
   .image3dContainer {
-    top: 30%;
-    /* Center horizontally - no need for right positioning */
+    top: 25vh;
   }
   
   .image3d {
@@ -401,19 +412,148 @@ a.secondary {
 }
 
 .footer {
-  grid-row-start: 3;
-  display: flex;
-  gap: 24px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 3rem 2rem;
+  margin-top: 4rem;
+  margin-bottom: 0;
+  padding-bottom: 5rem;
+  pointer-events: auto;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
+  left: 0;
+  right: 0;
+  position: relative;
 }
 
-.footer a {
+.footerContainer {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+  justify-content: space-between;
+  gap: 4rem;
+}
+
+.footerNav {
+  flex: 1;
+}
+
+.footerNavTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1.5rem;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  letter-spacing: 1px;
+}
+
+.footerNavLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.footerNavLink {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.2rem;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+}
+
+.footerNavLink:hover {
+  color: white;
+  transform: translateX(5px);
+}
+
+.footerTeam {
+  flex: 1;
+}
+
+.footerTeamTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1.5rem;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  letter-spacing: 1px;
+}
+
+.footerTeamMembers {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.footerTeamMember {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 1rem;
 }
 
-.footer img {
-  flex-shrink: 0;
+.footerTeamMemberImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.footerTeamMemberName {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footerTeamMemberName:hover {
+  color: white;
+}
+
+/* Responsive styles for the footer */
+@media (max-width: 768px) {
+  .footerContainer {
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .footerNavTitle, .footerTeamTitle {
+    font-size: 1.5rem;
+  }
+
+  .footerNavLink, .footerTeamMemberName {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 2rem 1rem;
+  }
+
+  .footerNavTitle, .footerTeamTitle {
+    font-size: 1.3rem;
+  }
+
+  .footerNavLink {
+    font-size: 0.9rem;
+  }
+
+  .footerTeamMemberImage {
+    width: 40px;
+    height: 40px;
+  }
+
+  .footerTeamMemberName {
+    font-size: 0.9rem;
+  }
 }
 
 /* Enable hover only on non-touch devices */
@@ -428,7 +568,7 @@ a.secondary {
     border-color: transparent;
   }
 
-  .footer a:hover {
+  .footerNavLink:hover {
     text-decoration: underline;
     text-underline-offset: 4px;
   }
@@ -957,4 +1097,362 @@ a.secondary {
     font-size: 0.6rem;
     padding: 0.2rem 0.6rem;
   }
+}
+
+/* HackPSU Team Section Styles */
+.teamSection {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 2rem;
+  margin-top: 2rem;
+  pointer-events: auto;
+}
+
+.teamTitle {
+  font-size: 4rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 4rem;
+  text-align: center;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 1.5rem 2.5rem;
+  border-radius: 20px;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  max-width: 1400px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 3rem;
+}
+
+.teamMember {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.teamImageContainer {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.teamImageContainer:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.teamImage8bit, .teamImageReal {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 0.3s ease;
+}
+
+.teamImageReal {
+  opacity: 0;
+}
+
+.teamImageContainer:hover .teamImage8bit {
+  opacity: 0;
+}
+
+.teamImageContainer:hover .teamImageReal {
+  opacity: 1;
+}
+
+.teamMemberName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+/* Responsive design for team section */
+@media (max-width: 1200px) {
+  .teamGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+  }
+  
+  .teamTitle {
+    font-size: 3.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .teamTitle {
+    font-size: 2.5rem;
+    padding: 1rem 1.5rem;
+  }
+  
+  .teamImageContainer {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .teamMemberName {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .teamGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+  
+  .teamTitle {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .teamImageContainer {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+/* Technologies Used Section Styles */
+.techSection {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 2rem;
+  margin-top: 2rem;
+  margin-bottom: 0;
+  pointer-events: auto;
+}
+
+.techTitle {
+  font-size: 4rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 4rem;
+  text-align: center;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 1.5rem 2.5rem;
+  border-radius: 20px;
+}
+
+.techGrid {
+  width: 100%;
+  max-width: 1400px;
+  position: relative;
+  padding: 3rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.techCard {
+  flex: none;
+  scroll-snap-align: none;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  height: 200px;
+  justify-content: center;
+}
+
+.techCard:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.techCard:hover::before {
+  opacity: 0.5;
+}
+
+.techCard::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #00ccff, #3333ff, #00ffff, #00cc99);
+  z-index: -1;
+  filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 16px;
+}
+
+.techName {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: white;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  letter-spacing: 1px;
+}
+
+.techPurpose {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive styles for the tech section */
+@media (max-width: 1200px) {
+  .techGrid {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .techGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .techCard {
+    height: 180px;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .techSection {
+    padding: 3rem 1rem;
+  }
+  
+  .techTitle {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .techGrid {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+  
+  .techCard {
+    flex: none;
+    scroll-snap-align: none;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    height: 200px;
+    justify-content: center;
+  }
+  
+  .techName {
+    font-size: 1.5rem;
+  }
+  
+  .techPurpose {
+    font-size: 0.9rem;
+  }
+}
+
+/* Carousel Navigation Arrows */
+.carouselArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.3s ease;
+  z-index: 10;
+  pointer-events: auto;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.carouselArrowLeft {
+  left: 20px;
+}
+
+.carouselArrowRight {
+  right: 20px;
+}
+
+.gamesCarousel:hover .carouselArrow {
+  opacity: 0.7;
+}
+
+.carouselArrow:hover {
+  opacity: 1 !important;
+  background: rgba(0, 0, 0, 0.7);
 }

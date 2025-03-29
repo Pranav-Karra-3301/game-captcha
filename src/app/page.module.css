@@ -105,17 +105,30 @@
 }
 
 /* HackPSU emblem */
-.hackpsuEmblem {
-  position: fixed;
+.emblemContainer {
+  position: absolute;
   top: 20px;
   left: 20px;
+  display: flex;
+  gap: 15px;
   z-index: 1000; /* Above everything else */
-  width: 100px;
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 15px;
+  padding: 10px 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.hackpsuEmblem, .metaquestEmblem {
+  width: 90px; /* 10% smaller than original 100px */
   height: auto;
   pointer-events: none; /* Don't block clicks */
 }
 
-.hackpsuEmblem img {
+.hackpsuEmblem img, .metaquestEmblem img {
   width: 100%;
   height: auto;
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));

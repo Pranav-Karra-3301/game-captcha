@@ -319,15 +319,6 @@ export default function Home() {
         muted={isMuted}
       />
       
-      {/* HackPSU emblem */}
-      <div className={styles.hackpsuEmblem}>
-        <img 
-          src="/hackpsu emblem.png" 
-          alt="HackPSU Emblem" 
-          style={{ width: '180%', height: 'auto' }}
-        />
-      </div>
-      
       {/* Mute button */}
       <button 
         className={styles.muteButton}
@@ -403,6 +394,22 @@ export default function Home() {
       
       {/* Content overlay */}
       <div className={styles.contentOverlay}>
+        {/* Emblems container */}
+        <div className={styles.emblemContainer}>
+          <div className={styles.hackpsuEmblem}>
+            <img 
+              src="/hackpsu emblem.png" 
+              alt="HackPSU Emblem"
+            />
+          </div>
+          <div className={styles.metaquestEmblem}>
+            <img 
+              src="/MetaQuest.png" 
+              alt="MetaQuest Emblem"
+            />
+          </div>
+        </div>
+        
         <div className={styles.logoContainer}>
           <img src="/logo.webp" alt="Space Trainer Logo" className={styles.logo} />
         </div>

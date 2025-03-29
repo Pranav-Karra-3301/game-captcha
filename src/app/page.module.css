@@ -664,7 +664,7 @@ a.secondary {
 }
 
 /* Captcha Section Styles */
-.captchaSection {
+.captchaSection, .captchaImprovedSection {
   width: 100%;
   min-height: 100vh;
   display: flex;
@@ -675,7 +675,11 @@ a.secondary {
   pointer-events: auto;
 }
 
-.captchaContainer {
+.captchaImprovedSection {
+  margin-top: 0;
+}
+
+.captchaContainer, .captchaImprovedContainer {
   display: flex;
   max-width: 1200px;
   width: 100%;
@@ -690,24 +694,44 @@ a.secondary {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.captchaImageContainer {
+.captchaImprovedContainer {
+  flex-direction: row-reverse;
+  background: rgba(40, 30, 0, 0.4);
+  box-shadow: 0 8px 32px rgba(255, 200, 0, 0.2);
+}
+
+.captchaImageContainer, .captchaImprovedImageContainer {
   flex: 1;
   padding-right: 2rem;
 }
 
-.captchaImage {
+.captchaImprovedImageContainer {
+  padding-right: 0;
+  padding-left: 2rem;
+}
+
+.captchaImage, .captchaImprovedImage {
   width: 100%;
   height: auto;
   border-radius: 10px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.captchaTextContainer {
+.captchaImprovedImage {
+  box-shadow: 0 8px 32px rgba(255, 200, 0, 0.25);
+}
+
+.captchaTextContainer, .captchaImprovedTextContainer {
   flex: 1;
   padding-left: 2rem;
 }
 
-.captchaTitle {
+.captchaImprovedTextContainer {
+  padding-left: 0;
+  padding-right: 2rem;
+}
+
+.captchaTitle, .captchaImprovedTitle {
   font-size: 3.5rem;
   font-weight: 900;
   color: rgba(255, 255, 255, 0.9);
@@ -718,7 +742,12 @@ a.secondary {
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-.captchaList {
+.captchaImprovedTitle {
+  color: rgba(255, 215, 0, 0.95);
+  text-shadow: 0 2px 10px rgba(255, 200, 0, 0.5);
+}
+
+.captchaList, .captchaImprovedList {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -728,53 +757,65 @@ a.secondary {
   line-height: 1.6;
 }
 
-.captchaList li {
+.captchaImprovedList {
+  color: rgba(255, 230, 180, 0.9);
+}
+
+.captchaList li, .captchaImprovedList li {
   margin-bottom: 0.5rem;
 }
 
-/* Responsive styles for the captcha section */
+/* Responsive styles for the captcha sections */
 @media (max-width: 1100px) {
-  .captchaContainer {
+  .captchaContainer, .captchaImprovedContainer {
     flex-direction: column;
     padding: 2rem;
   }
   
-  .captchaImageContainer {
+  .captchaImageContainer, .captchaImprovedImageContainer {
     padding-right: 0;
     padding-bottom: 2rem;
     width: 100%;
   }
   
-  .captchaTextContainer {
+  .captchaImprovedImageContainer {
+    padding-left: 0;
+  }
+  
+  .captchaTextContainer, .captchaImprovedTextContainer {
     padding-left: 0;
     width: 100%;
   }
+  
+  .captchaImprovedTextContainer {
+    padding-right: 0;
+  }
 
-  .captchaTitle {
+  .captchaTitle, .captchaImprovedTitle {
     font-size: 2.5rem;
     margin-bottom: 1.5rem;
     text-align: center;
   }
   
-  .captchaList {
+  .captchaList, .captchaImprovedList {
     font-size: 1.5rem;
   }
 }
 
 @media (max-width: 600px) {
-  .captchaSection {
+  .captchaSection, .captchaImprovedSection {
     padding: 3rem 1rem;
   }
   
-  .captchaContainer {
+  .captchaContainer, .captchaImprovedContainer {
     padding: 1.5rem;
   }
   
-  .captchaTitle {
+  .captchaTitle, .captchaImprovedTitle {
     font-size: 2rem;
   }
   
-  .captchaList {
+  .captchaList, .captchaImprovedList {
     font-size: 1.2rem;
   }
 }

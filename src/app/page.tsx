@@ -11,20 +11,6 @@ import {
   useAnimations, 
 } from "@react-three/drei";
 import styles from "./page.module.css";
-import ChartDashboard, { ChartDashboardItem } from '../components/ChartDashboard';
-import MetricChart from '../components/MetricChart';
-import AdvancedChart from '../components/AdvancedChart';
-import StatCard from '../components/StatCard';
-import { 
-  modelAccuracyData, 
-  trainingLossData, 
-  rewardProgressData, 
-  explorationRateData,
-  trainingDistributionData,
-  resourceUsageData,
-  timeLabels, 
-  generateLabeledData
-} from '../utils/chartData';
 
 // Specify the path to the gltf model
 const MODEL_PATH = "/spaceship_-_cb2/scene.gltf";
@@ -93,9 +79,13 @@ export default function Home() {
   
   // Load audio but don't try to autoplay
   useEffect(() => {
+    // Flag to track if we've already played the audio
+    let hasInteracted = false;
+    
     // Wait for user interaction before attempting to play
     const userInteraction = () => {
-      if (audioRef.current) {
+      if (audioRef.current && !hasInteracted) {
+        hasInteracted = true;
         audioRef.current.volume = 0.3;
         audioRef.current.play()
           .then(() => {
@@ -106,7 +96,6 @@ export default function Home() {
             console.error("Error playing audio:", error);
           });
       }
-      // Don't remove event listeners - needed for mobile browsers
     };
     
     // Add event listeners for user interaction
@@ -129,185 +118,10 @@ export default function Home() {
     }
   };
 
-  // Generate weekly performance data
-  const weeklyPerformanceData = generateLabeledData(
-    timeLabels.daily,
-    50,
-    90,
-    'up'
-  );
-
-  // Get the most recent values for our stat cards
-  const currentAccuracy = modelAccuracyData[modelAccuracyData.length - 1];
-  const previousAccuracy = modelAccuracyData[modelAccuracyData.length - 2];
-  const accuracyChange = ((currentAccuracy - previousAccuracy) / previousAccuracy) * 100;
-  
-  const currentLoss = trainingLossData[trainingLossData.length - 1];
-  const previousLoss = trainingLossData[trainingLossData.length - 2];
-  const lossChange = ((currentLoss - previousLoss) / previousLoss) * 100;
-  
-  const currentReward = rewardProgressData[rewardProgressData.length - 1];
-  const previousReward = rewardProgressData[rewardProgressData.length - 2];
-  const rewardChange = ((currentReward - previousReward) / previousReward) * 100;
-  
-  const totalEpisodes = 1250;
-  const episodesCompleted = 937;
-  const completionPercentage = Math.round((episodesCompleted / totalEpisodes) * 100);
-
   return (
     <main className="min-h-screen p-4 md:p-8 bg-gradient-to-br from-gray-900 via-space-900 to-black overflow-x-hidden">
       <div className="max-w-7xl mx-auto pb-32">
-        {/* Stats Overview */}
-        <div className="mb-6">
-          <h2 className="text-xl font-bold text-white mb-4">Key Metrics</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatCard 
-              title="Model Accuracy"
-              value={currentAccuracy.toFixed(1)}
-              suffix="%"
-              change={accuracyChange}
-              trend="up"
-              color="#4cd964"
-              icon={<span className="text-lg">📈</span>}
-            />
-            
-            <StatCard 
-              title="Loss Value"
-              value={currentLoss.toFixed(1)}
-              change={lossChange}
-              trend="down"
-              color="#ff3b30"
-              icon={<span className="text-lg">📉</span>}
-            />
-            
-            <StatCard 
-              title="Average Reward"
-              value={currentReward.toFixed(1)}
-              change={rewardChange}
-              trend="up"
-              color="#5ac8fa"
-              icon={<span className="text-lg">🏆</span>}
-            />
-            
-            <StatCard 
-              title="Training Progress"
-              value={completionPercentage}
-              suffix="%"
-              trend="neutral"
-              color="#ffcc00"
-              icon={<span className="text-lg">⏱️</span>}
-            />
-          </div>
-        </div>
-        
-        {/* Dashboard Charts */}
-        <ChartDashboard 
-          title="Model Training Dashboard" 
-          subtitle="Real-time performance metrics for your AI model"
-        >
-          <ChartDashboardItem 
-            title="Model Accuracy" 
-            subtitle="Training performance over time"
-            accentColor="#4cd964" // Green
-          >
-            <MetricChart 
-              data={modelAccuracyData} 
-              color="#4cd964" 
-              label="Current Accuracy"
-              showDataPoints={true}
-            />
-          </ChartDashboardItem>
-          
-          <ChartDashboardItem 
-            title="Training Loss" 
-            subtitle="Decreasing over training epochs"
-            accentColor="#ff3b30" // Red
-          >
-            <MetricChart 
-              data={trainingLossData} 
-              color="#ff3b30" 
-              label="Current Loss"
-              showDataPoints={true}
-            />
-          </ChartDashboardItem>
-          
-          <ChartDashboardItem 
-            title="Reward Progress" 
-            subtitle="Average rewards per episode"
-            accentColor="#5ac8fa" // Blue
-          >
-            <MetricChart 
-              data={rewardProgressData} 
-              color="#5ac8fa" 
-              label="Current Reward"
-              showDataPoints={true}
-            />
-          </ChartDashboardItem>
-          
-          <ChartDashboardItem 
-            title="Exploration Rate" 
-            subtitle="Epsilon decay during training"
-            accentColor="#ffcc00" // Yellow
-          >
-            <MetricChart 
-              data={explorationRateData} 
-              color="#ffcc00" 
-              label="Current Epsilon"
-              showDataPoints={true}
-            />
-          </ChartDashboardItem>
-          
-          <ChartDashboardItem 
-            title="Action Distribution" 
-            subtitle="Frequency of actions taken by the agent"
-            accentColor="#af52de" // Purple
-            span="md"
-          >
-            <AdvancedChart 
-              data={trainingDistributionData}
-              type="donut"
-              color="#af52de"
-              height={180}
-              showLegend={true}
-              formatValue={(v) => `${v}`}
-            />
-          </ChartDashboardItem>
-          
-          <ChartDashboardItem 
-            title="Resource Usage" 
-            subtitle="Current resource utilization"
-            accentColor="#5856d6" // Indigo
-            span="md"
-          >
-            <AdvancedChart 
-              data={resourceUsageData}
-              type="bar"
-              color="#5856d6"
-              secondaryColor="#34324d"
-              height={180}
-              showLabels={true}
-              formatValue={(v) => `${v}%`}
-            />
-          </ChartDashboardItem>
-          
-          <ChartDashboardItem 
-            title="Weekly Performance" 
-            subtitle="Performance metrics by day"
-            accentColor="#007aff" // Blue
-            span="full"
-            height={280}
-          >
-            <AdvancedChart 
-              data={weeklyPerformanceData}
-              type="area"
-              color="#007aff"
-              height={250}
-              showLabels={true}
-              showGrid={true}
-              formatValue={(v) => `${v.toFixed(1)}%`}
-            />
-          </ChartDashboardItem>
-        </ChartDashboard>
+        {/* Dashboard and chart related sections removed */}
       </div>
 
       {/* Audio element without autoplay */}
@@ -383,7 +197,7 @@ export default function Home() {
             />
             <pointLight position={[-5, 5, 5]} intensity={1.5} color="#6695ff" />
             <pointLight position={[5, -5, -5]} intensity={1.2} color="#ff9966" />
-            <pointLight position={[0, 0, 10]} intensity={2} color="#ffffff" />
+            <pointLight position={[0, 0, 10]} intensity={20} color="#ffffff" />
             
             {/* Spaceship model */}
             <SpaceshipModel />
@@ -418,7 +232,7 @@ export default function Home() {
                 Play Game
               </Link>
             </li>
-            <li className={activeNav === "quest3" ? styles.active : ""}>
+            <li className={activeNav === "Meta Quest" ? styles.active : ""}>
               <Link href="/quest3" onClick={() => setActiveNav("quest3")} prefetch={true} aria-label="Go to Quest 3">
                 Quest 3
               </Link>
@@ -426,6 +240,16 @@ export default function Home() {
             <li className={activeNav === "model" ? styles.active : ""}>
               <Link href="/model" onClick={() => setActiveNav("model")} prefetch={true} aria-label="View the model">
                 Model
+              </Link>
+            </li>
+            <li className={activeNav === "data" ? styles.active : ""}>
+              <Link href="/data" onClick={() => setActiveNav("data")} prefetch={true} aria-label="View the data">
+                Data
+              </Link>
+            </li>
+            <li className={activeNav === "Business Plan" ? styles.active : ""}>
+              <Link href="/plan" onClick={() => setActiveNav("Business Plan")} prefetch={true} aria-label="View the Business Plan">
+                Business Plan
               </Link>
             </li>
           </ul>
@@ -538,6 +362,16 @@ export default function Home() {
             
             {/* Removed carousel dots navigation */}
           </div>
+        </div>
+        
+        {/* Whiteboard Image - Full Width */}
+        <div className="w-full mt-16">
+          <img 
+            src="/THE WHITEBOARD.PNG" 
+            alt="Whiteboard" 
+            style={{ width: '100%', height: 'auto' }}
+            loading="lazy"
+          />
         </div>
       </div>
     </main>

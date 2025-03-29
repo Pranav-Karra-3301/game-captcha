@@ -322,7 +322,7 @@ export default function Home() {
         
         {/* Multi-Game Support section */}
         <div className={styles.gamesSection} id="gamesSection">
-          <h2 className={styles.gamesTitle}>Multi-Game Support</h2>
+          <h2 className={styles.gamesTitle}>Possible Games</h2>
           
           <div className={styles.gamesCarousel}>
             {/* Left Navigation Arrow */}
@@ -488,7 +488,15 @@ export default function Home() {
             </div>
           </div>
         </div>
-        
+        {/* Whiteboard Image - Full Width */}
+        <div className="w-full mt-16">
+          <img 
+            src="/THE WHITEBOARD.PNG" 
+            alt="Whiteboard" 
+            style={{ width: '100%', height: 'auto' }}
+            loading="lazy"
+          />
+        </div>
         {/* Technologies Used section */}
         <div className={styles.techSection} id="techSection">
           <h2 className={styles.techTitle}>Technologies Used</h2>
@@ -653,15 +661,7 @@ export default function Home() {
           </div>
         </div>
         
-        {/* Whiteboard Image - Full Width */}
-        <div className="w-full mt-16">
-          <img 
-            src="/THE WHITEBOARD.PNG" 
-            alt="Whiteboard" 
-            style={{ width: '100%', height: 'auto' }}
-            loading="lazy"
-          />
-        </div>
+       
       </div>
     </main>
   );

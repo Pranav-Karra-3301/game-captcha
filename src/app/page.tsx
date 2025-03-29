@@ -314,6 +314,8 @@ export default function Home() {
                 <li>Our Captcha is:</li>
                 <li>• Fun and Engaging</li>
                 <li>• Trains AI Models Directly</li>
+                <li>• Collects more data in shorter time</li>
+                <li>• People play it for fun (a captcha... for fun)</li>
                 <li>• Open Source</li>
               </ul>
             </div>
@@ -492,6 +494,14 @@ export default function Home() {
         <div className="w-full mt-16">
           <img 
             src="/THE WHITEBOARD.PNG" 
+            alt="Whiteboard" 
+            style={{ width: '100%', height: 'auto' }}
+            loading="lazy"
+          />
+        </div>
+        <div className="w-full mt-16">
+          <img 
+            src="/part2.png" 
             alt="Whiteboard" 
             style={{ width: '100%', height: 'auto' }}
             loading="lazy"

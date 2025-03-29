@@ -7,9 +7,10 @@ interface RevenueCardProps {
   title: string;
   description: string;
   marketData?: string;
+  citation?: string;
 }
 
-const RevenueCard = ({ emoji, title, description, marketData }: RevenueCardProps) => {
+const RevenueCard = ({ emoji, title, description, marketData, citation }: RevenueCardProps) => {
   return (
     <motion.div 
       className={styles.revenueCard}
@@ -22,6 +23,11 @@ const RevenueCard = ({ emoji, title, description, marketData }: RevenueCardProps
       <h3 className={styles.revenueTitle}>{title}</h3>
       <p className={styles.revenueDescription}>{description}</p>
       {marketData && <p className={styles.marketData}>{marketData}</p>}
+      {citation && (
+        <div className={styles.citationBox}>
+          <p className={styles.citationText}>{citation}</p>
+        </div>
+      )}
     </motion.div>
   );
 };

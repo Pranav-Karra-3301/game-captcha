@@ -544,29 +544,10 @@ function update(time, delta) {
   
   // Handle keyboard input for movement
   if (window.cursors.left.isDown) {
-<<<<<<< HEAD
     window.player.x = Math.max(25, window.player.x - 6);
   } 
   else if (window.cursors.right.isDown) {
     window.player.x = Math.min(525, window.player.x + 6);
-=======
-    window.player.x = Math.max(25, window.player.x - window.gameSpeed.playerSpeed * deltaTime);
-    
-    // Make sure player position is up to date for tracking
-    if (typeof window !== 'undefined' && window.player) {
-      window.player.x = window.player.x;
-      window.player.y = window.player.y;
-    }
-  } 
-  else if (window.cursors.right.isDown) {
-    window.player.x = Math.min(525, window.player.x + window.gameSpeed.playerSpeed * deltaTime);
-    
-    // Make sure player position is up to date for tracking
-    if (typeof window !== 'undefined' && window.player) {
-      window.player.x = window.player.x;
-      window.player.y = window.player.y;
-    }
->>>>>>> upstream/main
   }
   
   // Handle shooting with spacebar

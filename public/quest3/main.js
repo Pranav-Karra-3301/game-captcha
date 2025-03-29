@@ -1,5 +1,9 @@
 // Space Shooter Game - Enhanced Version
-console.log('Enhanced Space Shooter initializing');
+console.log('Enhanced Space Shooter (Quest3 Version) initializing');
+
+// Add debugging information about environment
+console.log('Environment:', typeof window !== 'undefined' ? window.location.hostname : 'unknown');
+console.log('Checking DOM ready state:', document.readyState);
 
 // Attach initialization function to window
 if (typeof window !== 'undefined') {
@@ -55,7 +59,21 @@ function initGame() {
   // Check if Phaser exists
   if (typeof Phaser === 'undefined') {
     console.error('Phaser not found! Game cannot start.');
-    document.getElementById('game-container').innerHTML = '<div style="color:white;text-align:center;padding:20px;"><h2>Error: Phaser not loaded</h2><p>Please check console for details</p></div>';
+    const container = document.getElementById('game-container');
+    if (container) {
+      container.innerHTML = '<div style="color:white;text-align:center;padding:20px;"><h2>Error: Phaser not loaded</h2><p>Please check console for details</p><button onclick="window.location.reload()">Reload Page</button></div>';
+    } else {
+      console.error('Game container not found either!');
+    }
+    
+    // Try to load Phaser dynamically as fallback
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js';
+    script.onload = () => {
+      console.log('Dynamically loaded Phaser, retrying initialization...');
+      setTimeout(initGame, 500);
+    };
+    document.head.appendChild(script);
     return;
   }
   
@@ -70,8 +88,8 @@ function initGame() {
   // Check if container exists
   const gameContainer = document.getElementById('game-container');
   if (!gameContainer) {
-    console.error('Game container not found, retrying in 100ms');
-    setTimeout(initGame, 100);
+    console.error('Game container not found, retrying in 500ms');
+    setTimeout(initGame, 500); // Increased delay
     return;
   }
   
@@ -134,7 +152,17 @@ function logGameEvent(message, type) {
 
 // Preload assets
 function preload() {
-  console.log('Preloading game assets from correct directory');
+  console.log('Preloading Quest3 game assets from correct directory');
+  
+  // Add error handling for assets
+  this.load.on('loaderror', (fileObj) => {
+    console.error('Error loading asset:', fileObj.src);
+  });
+  
+  // Add complete event to log successful loading
+  this.load.on('complete', () => {
+    console.log('All assets loaded successfully');
+  });
   
   // Load background - confirmed to exist from our file check
   this.load.image('background', '/quest3/assets/images/background_5.png');
@@ -815,12 +843,40 @@ function shoot(scene) {
   window.sounds.shoot.play();
 }
 
-// Start the game
-console.log('Starting game initialization');
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-  setTimeout(initGame, 200);
-} else {
-  document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(initGame, 200);
-  });
+// Start the game with improved initialization
+console.log('Setting up game initialization');
+
+// Use a more robust initialization approach
+function initializeWhenReady() {
+  console.log('Initializing when everything is ready');
+  
+  // Check if container exists yet
+  const gameContainer = document.getElementById('game-container');
+  if (!gameContainer) {
+    console.log('Container not ready, waiting 300ms more...');
+    setTimeout(initializeWhenReady, 300);
+    return;
+  }
+  
+  // Check if Phaser exists
+  if (typeof Phaser === 'undefined') {
+    console.log('Phaser not loaded yet, waiting 300ms more...');
+    setTimeout(initializeWhenReady, 300);
+    return;
+  }
+  
+  console.log('Everything ready, starting game!');
+  initGame();
+}
+
+// Replace the initialization code at the bottom with:
+window.addEventListener('load', function() {
+  console.log('Window fully loaded, waiting 500ms to initialize game');
+  setTimeout(initializeWhenReady, 500);
+});
+
+// Add a fallback initialization in case window.load already fired
+if (document.readyState === 'complete') {
+  console.log('Document already complete, scheduling initialization');
+  setTimeout(initializeWhenReady, 500);
 } 

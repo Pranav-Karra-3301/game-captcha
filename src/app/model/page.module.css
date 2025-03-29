@@ -67,7 +67,6 @@
   color: white;
   padding: 30px;
   font-family: var(--pixelated-font), monospace;
-  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><rect width='12' height='12' fill='white'/></svg>"), auto;
 }
 
 .topBar {
@@ -116,7 +115,6 @@
   background: transparent;
   color: rgba(255, 255, 255, 0.7);
   border-radius: 0;
-  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><rect width='12' height='12' fill='white'/></svg>"), auto;
   transition: all 0.2s ease;
   font-size: 0.9rem;
   font-family: var(--pixelated-font), monospace;
@@ -229,7 +227,6 @@
   align-items: center;
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.6);
-  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><rect width='12' height='12' fill='white'/></svg>"), auto;
   transition: all 0.2s ease;
 }
 
@@ -601,7 +598,7 @@
   align-items: center;
   margin-right: 12px;
   transition: transform 0.2s ease;
-  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><rect width='12' height='12' fill='white'/></svg>"), auto;
+  cursor: pointer;
 }
 
 .backLink:hover {
@@ -629,7 +626,6 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><rect width='12' height='12' fill='white'/></svg>"), auto;
 }
 
 .tooltip {
@@ -715,5 +711,5 @@
 .backLink,
 .viewAll,
 .tooltipTrigger {
-  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><rect width='12' height='12' fill='white'/></svg>"), auto;
+  cursor: pointer;
 }

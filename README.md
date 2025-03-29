@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 RetroCAPTCHA – Human Verification, Reimagined  
+![HackPSU](https://img.shields.io/badge/HackPSU-Spring_2025-blueviolet?style=flat-square)
+![JavaScript](https://img.shields.io/badge/Frontend-JavaScript-yellow?style=flat-square)
+![TensorFlow](https://img.shields.io/badge/ML-TensorFlow-orange?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
-## Getting Started
+> *“Prove you're human... by saving the galaxy.”*
 
-First, run the development server:
+## 🎮 The Problem  
+Let’s face it — old CAPTCHAs are annoying. Clicking fire hydrants and typing blurry letters? Nah.  
+We wanted to **make human verification actually fun** — so we brought back classic retro games and turned them into CAPTCHAs.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 👾 What We Built  
+**RetroCAPTCHA** replaces boring verification with a playable **Space Shooter** game.  
+You dodge meteors, shoot enemies, and survive — all in under 30 seconds.  
+If you win, you're verified. If you're a bot? Good luck, buddy.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+But here’s the twist:  
+We trained a **Deep Q-Network (DQN)** agent to play the same game like a bot. That way, we could design the experience to keep it secure — and still human-friendly.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🧠 How It Works  
+- **JavaScript** frontend with a retro-style Space Shooter  
+- **Node.js backend** validates performance (score, actions, etc.)  
+- **TensorFlow-based DQN** trained on simulated gameplay  
+- Dynamic thresholds so bots fail and humans pass  
+- Built with modularity: you can plug in new games later!
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔥 Features  
+- 🎮 Space Shooter mini-game CAPTCHA  
+- 🤖 AI-trained bot to simulate attacks  
+- 🔐 Anti-bot logic without killing user experience  
+- 📦 Easy to plug into any web app  
+- 🧩 Scalable system for new game-based CAPTCHAs
 
-## Learn More
+## 🧪 Tech Stack  
+- **Frontend:** JavaScript, HTML, CSS  
+- **Backend:** Node.js, Express  
+- **ML Model:** Python, TensorFlow (DQN)  
+- **Game Engine:** Custom JS Canvas
 
-To learn more about Next.js, take a look at the following resources:
+## 🌍 Our First Game: Space Shooter  
+- Control a spaceship and survive for 30 seconds  
+- Real-time score tracking and dynamic enemies  
+- Keyboard-based controls (Arrow keys + Spacebar)  
+- Tuned to give humans a fun edge, while bots struggle
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🧑‍🚀 Team RetroCAPTCHA  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Name             | Role                          |
+|------------------|-------------------------------|
+| **Manit Garg**   | Game Dev + Backend Integration |
+| **Pranav Karra** | Machine Learning + Model Dev   |
+| **Pihu Agarwal** | Research + Logic Design        |
+| **Dhruva Nagesh**| Frontend + Game Integration    |
 
-## Deploy on Vercel
+> Built in 24 hours at **HackPSU Spring 2025** with late-night pizza and retro game nostalgia 🎮🍕
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔮 What’s Next  
+- Add more games: Snake, Brick Breaker, Pong  
+- Train adversarial bots for stress-testing  
+- Deploy live demo + public API  
+- Mobile + accessibility support  
+- Package as npm and Flask modules for devs
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🎥 Demo  
+Coming soon – we’ll drop a link and gameplay GIF here!
+
+---
+
+> *Fun for humans. Frustrating for bots.*  
+> **RetroCAPTCHA** – The future of verification has a high score screen.

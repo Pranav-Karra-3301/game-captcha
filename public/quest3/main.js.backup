@@ -171,6 +171,25 @@ function create() {
   window.cursors = this.input.keyboard.createCursorKeys();
   window.shootKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
   
+  // Setup mouse input for directional movement
+  this.input.on('pointermove', function (pointer) {
+    // Only update target position if player exists and game is in playing state
+    if (window.player && window.gameState === 'playing') {
+      // Store target position for smooth movement
+      window.targetX = Phaser.Math.Clamp(pointer.x, 25, 525);
+      window.targetY = Phaser.Math.Clamp(pointer.y, 100, 650);
+    }
+  });
+  
+  // Setup mouse click for shooting
+  this.input.on('pointerdown', function (pointer) {
+    if (window.gameState === 'playing' && pointer.button === 0) {
+      shoot(this.scene);
+    } else if (window.gameState === 'menu' || window.gameState === 'gameover') {
+      startGame(this.scene);
+    }
+  }, this);
+  
   // Create other keys
   const pKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
   const qKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
@@ -201,19 +220,6 @@ function create() {
   qKey.on('down', () => {
     if (window.gameState === 'playing' || window.gameState === 'gameover') {
       returnToMenu(this);
-    }
-  });
-  
-  // Add mouse click to start game
-  this.input.on('pointerdown', (pointer) => {
-    if (pointer.leftButtonDown()) {
-      if (window.gameState === 'menu') {
-        startGame(this);
-      } else if (window.gameState === 'gameover') {
-        startGame(this);
-      } else if (window.gameState === 'playing' && window.player && window.player.active) {
-        shoot(this);
-      }
     }
   });
   
@@ -250,7 +256,7 @@ function createMenuScreen(scene) {
     fill: '#fff' 
   }).setOrigin(0.5));
   
-  window.menuGroup.add(scene.add.text(275, 300, 'Move with Mouse', { 
+  window.menuGroup.add(scene.add.text(275, 300, 'Move with Mouse Direction', { 
     fontSize: '16px', 
     fill: '#fff' 
   }).setOrigin(0.5));
@@ -357,13 +363,19 @@ function startGame(scene) {
   // Log game start
   logGameEvent("Game started", "info");
   
-  // Create player using spaceship sprite
-  window.player = scene.add.sprite(275, 610, 'player').setScale(0.2);
+  // Create player using spaceship sprite - now positioned higher for more movement space
+  window.player = scene.add.sprite(275, 550, 'player').setScale(0.2);
+  
+  // Initialize target position for smooth movement
+  window.targetX = window.player.x;
+  window.targetY = window.player.y;
   
   // Make player interactive with mouse
   scene.input.on('pointermove', (pointer) => {
-    if (window.gameState === 'playing' && window.player && window.player.active) {
-      window.player.x = Phaser.Math.Clamp(pointer.worldX, 25, 525);
+    if (window.gameState === 'playing') {
+      // Update target position
+      window.targetX = Phaser.Math.Clamp(pointer.x, 25, 525);
+      window.targetY = Phaser.Math.Clamp(pointer.y, 100, 650);
     }
   });
   
@@ -555,7 +567,7 @@ function update(time, delta) {
   
   // Game is in playing state
   
-  // Handle keyboard input for movement
+  // Handle keyboard input for movement as fallback
   if (window.cursors.left.isDown) {
     window.player.x = Math.max(25, window.player.x - 6);
   } 
@@ -563,7 +575,41 @@ function update(time, delta) {
     window.player.x = Math.min(525, window.player.x + 6);
   }
   
-  // Handle shooting with spacebar
+  if (window.cursors.up.isDown) {
+    window.player.y = Math.max(100, window.player.y - 6);
+  }
+  else if (window.cursors.down.isDown) {
+    window.player.y = Math.min(650, window.player.y + 6);
+  }
+  
+  // Smooth mouse movement
+  if (window.targetX !== undefined && window.targetY !== undefined) {
+    // Calculate distance to target
+    const dx = window.targetX - window.player.x;
+    const dy = window.targetY - window.player.y;
+    
+    // Calculate distance
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    
+    // Move player toward target if not already there
+    if (distance > 5) {
+      // Calculate movement speed based on distance (faster when further away)
+      const speed = Math.min(distance * 0.2, 8);
+      
+      // Calculate movement direction
+      const angle = Math.atan2(dy, dx);
+      
+      // Update player position
+      window.player.x += Math.cos(angle) * speed;
+      window.player.y += Math.sin(angle) * speed;
+      
+      // Ensure player stays within bounds
+      window.player.x = Phaser.Math.Clamp(window.player.x, 25, 525);
+      window.player.y = Phaser.Math.Clamp(window.player.y, 100, 650);
+    }
+  }
+  
+  // Handle shooting with spacebar as fallback
   if (Phaser.Input.Keyboard.JustDown(window.shootKey)) {
     shoot(this);
   }

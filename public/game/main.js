@@ -38,7 +38,6 @@ window.gameOverGroup = null;
 window.menuGroup = null;
 window.enemyShootTimer = 0;
 window.background = null;
-window.gameStartTime = null; // Track when game starts
 // Audio variables
 window.sounds = {
   bgMusic: null,
@@ -47,16 +46,6 @@ window.sounds = {
   explosion: null,
   hit: null,
   gameOver: null
-};
-
-// Game speed constants - base values for 60fps
-window.gameSpeed = {
-  backgroundSpeed: 60, // pixels per second
-  playerSpeed: 300,    // pixels per second
-  bulletSpeed: 600,    // pixels per second
-  enemySpeed: 120,     // pixels per second
-  enemyBulletSpeed: 420, // pixels per second
-  enemySpawnRate: 0.5  // enemies per second
 };
 
 // Initialize game
@@ -96,7 +85,6 @@ function initGame() {
   window.gameState = 'menu';
   window.gameOverGroup = null;
   window.menuGroup = null;
-  window.gameStartTime = null;
   
   // Enhanced game configuration with preload function
   const config = {
@@ -142,23 +130,6 @@ function logGameEvent(message, type) {
     const timestamp = new Date().toLocaleTimeString();
     window.logGameEvent(`${timestamp}: ${message}`, type);
   }
-}
-
-// Helper function to trigger game end event with stats
-function triggerGameEnd(outcome) {
-  // Create custom event with game stats
-  const gameEndEvent = new CustomEvent('gameend', {
-    detail: {
-      score: window.score,
-      enemiesKilled: window.enemiesKilled,
-      enemiesMissed: window.enemiesMissed,
-      lives: window.lives,
-      outcome: outcome // 'win', 'loss', or 'quit'
-    }
-  });
-  
-  // Dispatch the event
-  window.dispatchEvent(gameEndEvent);
 }
 
 // Preload assets
@@ -302,9 +273,6 @@ function createMenuScreen(scene) {
 function startGame(scene) {
   window.gameState = 'playing';
   
-  // Record game start time for session duration tracking
-  window.gameStartTime = Date.now();
-  
   // Reset game variables
   window.score = 0;
   window.lives = 3;
@@ -392,8 +360,16 @@ function startGame(scene) {
   scene.enemyBullets = [];
   
   // Create enemy spawner
-  scene.enemySpawnTimer = 0;
-  // Instead of using time.addEvent, we'll handle enemy spawning in the update function
+  scene.enemySpawner = scene.time.addEvent({
+    delay: 2000, // Increased from 1000 to 2000 (less enemies)
+    callback: () => {
+      if (window.gameState === 'playing') {
+        spawnEnemy(scene);
+      }
+    },
+    callbackScope: scene,
+    loop: true
+  });
   
   // Ensure music is playing
   if (!window.sounds.bgMusic.isPlaying) {
@@ -420,9 +396,6 @@ function updateLivesDisplay(scene) {
 
 // Return to menu
 function returnToMenu(scene) {
-  // First trigger the game end event with 'quit' outcome
-  triggerGameEnd('quit');
-  
   window.gameState = 'menu';
   
   // Show menu
@@ -484,8 +457,10 @@ function returnToMenu(scene) {
   }
   scene.enemies = [];
   
-  // Reset enemy spawn timer
-  scene.enemySpawnTimer = 0;
+  // Stop enemy spawner if it exists
+  if (scene.enemySpawner) {
+    scene.enemySpawner.remove();
+  }
   
   // Ensure music is playing
   if (!window.sounds.bgMusic.isPlaying) {
@@ -496,9 +471,6 @@ function returnToMenu(scene) {
 // Create game over screen
 function showGameOver(scene) {
   window.gameState = 'gameover';
-  
-  // First trigger the game end event with 'loss' outcome
-  triggerGameEnd('loss');
   
   // Log game over
   logGameEvent(`Game Over! Final Score: ${window.score}, Killed: ${window.enemiesKilled}, Missed: ${window.enemiesMissed}`, "info");
@@ -553,12 +525,9 @@ function showGameOver(scene) {
 
 // Update function
 function update(time, delta) {
-  // Calculate deltaTime in seconds (delta is in ms)
-  const deltaTime = delta / 1000;
-  
   // Scroll background for all game states
   if (window.background) {
-    window.background.tilePositionY -= window.gameSpeed.backgroundSpeed * deltaTime;
+    window.background.tilePositionY -= 1.5;
   }
   
   // Different behavior based on game state
@@ -573,39 +542,12 @@ function update(time, delta) {
   
   // Game is in playing state
   
-  // Handle enemy spawning with delta time
-  if (scene.enemySpawnTimer === undefined) {
-    scene.enemySpawnTimer = 0;
-  }
-  
-  scene.enemySpawnTimer += deltaTime;
-  const spawnInterval = 1 / window.gameSpeed.enemySpawnRate; // time between spawns
-  
-  if (scene.enemySpawnTimer >= spawnInterval) {
-    if (window.gameState === 'playing') {
-      spawnEnemy(scene);
-    }
-    scene.enemySpawnTimer = 0; // Reset timer
-  }
-  
-  // Handle keyboard input for movement - now using delta time
+  // Handle keyboard input for movement
   if (window.cursors.left.isDown) {
-    window.player.x = Math.max(25, window.player.x - window.gameSpeed.playerSpeed * deltaTime);
-    
-    // Make sure player position is up to date for tracking
-    if (typeof window !== 'undefined' && window.player) {
-      window.player.x = window.player.x;
-      window.player.y = window.player.y;
-    }
+    window.player.x = Math.max(25, window.player.x - 6);
   } 
   else if (window.cursors.right.isDown) {
-    window.player.x = Math.min(525, window.player.x + window.gameSpeed.playerSpeed * deltaTime);
-    
-    // Make sure player position is up to date for tracking
-    if (typeof window !== 'undefined' && window.player) {
-      window.player.x = window.player.x;
-      window.player.y = window.player.y;
-    }
+    window.player.x = Math.min(525, window.player.x + 6);
   }
   
   // Handle shooting with spacebar
@@ -614,8 +556,7 @@ function update(time, delta) {
   }
   
   // Random enemy shooting - much less frequent now
-  // Use time-based probability for more consistent behavior across frame rates
-  if (this.enemies.length > 0 && Math.random() < 0.008 * deltaTime * 60) { // Adjusted for 60fps
+  if (this.enemies.length > 0 && Math.random() < 0.008) { // Reduced from 0.02 to 0.008
     enemyShoot(this);
   }
   
@@ -627,8 +568,8 @@ function update(time, delta) {
       continue;
     }
     
-    // Move bullet up with delta time
-    bullet.y -= window.gameSpeed.bulletSpeed * deltaTime;
+    // Move bullet up (increased from 10 to 12)
+    bullet.y -= 12;
     
     // Remove if off screen
     if (bullet.y < -10) {
@@ -687,8 +628,8 @@ function update(time, delta) {
       continue;
     }
     
-    // Move bullet down with delta time
-    bullet.y += window.gameSpeed.enemyBulletSpeed * deltaTime;
+    // Move bullet down (increased from 7 to 8)
+    bullet.y += 8;
     
     // Remove if off screen
     if (bullet.y > 700) {
@@ -721,8 +662,8 @@ function update(time, delta) {
       continue;
     }
     
-    // Move enemy down with delta time
-    enemy.y += window.gameSpeed.enemySpeed * deltaTime;
+    // Move enemy down (increased from 2 to 2.5)
+    enemy.y += 2.5;
     
     // Remove if off screen (enemy missed)
     if (enemy.y > 700) {

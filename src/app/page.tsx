@@ -10,6 +10,7 @@ import {
   useGLTF, 
   useAnimations, 
 } from "@react-three/drei";
+import { ArrowUpRight } from "lucide-react";
 import styles from "./page.module.css";
 import ChartDashboard, { ChartDashboardItem } from '../components/ChartDashboard';
 import MetricChart from '../components/MetricChart';
@@ -709,6 +710,91 @@ export default function Home() {
             <div className={styles.techCard}>
               <h3 className={styles.techName}>Three.js</h3>
               <p className={styles.techPurpose}>3D Web Model</p>
+            </div>
+          </div>
+        </div>
+        
+        {/* Footer Section */}
+        <div className={styles.footer} id="footer">
+          <div className={styles.footerContainer}>
+            {/* Navigation Column */}
+            <div className={styles.footerNav}>
+              <h3 className={styles.footerNavTitle}>Navigation</h3>
+              <div className={styles.footerNavLinks}>
+                <a 
+                  href="#" 
+                  className={styles.footerNavLink}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  Back to Top
+                </a>
+                <Link href="/play" className={styles.footerNavLink}>Play Game</Link>
+                <Link href="/model" className={styles.footerNavLink}>Model Dashboard</Link>
+                <Link href="/data" className={styles.footerNavLink}>Data</Link>
+                <a href="/plan" className={styles.footerNavLink}>Business Plan</a>
+                <a href="http://hackpsu.org/" target="_blank" rel="noopener noreferrer" className={styles.footerNavLink}>HackPSU Website</a>
+              </div>
+            </div>
+            
+            {/* Team Column */}
+            <div className={styles.footerTeam}>
+              <h3 className={styles.footerTeamTitle}>Team</h3>
+              <div className={styles.footerTeamMembers}>
+                {/* Pranav Karra */}
+                <div className={styles.footerTeamMember}>
+                  <img src="/ppl/Pranav.jpg" alt="Pranav Karra" className={styles.footerTeamMemberImage} />
+                  <a 
+                    href="https://www.linkedin.com/in/pranav-karra-09477228b/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className={styles.footerTeamMemberName}
+                  >
+                    Pranav Karra <ArrowUpRight size={16} />
+                  </a>
+                </div>
+                
+                {/* Dhruva Nagesh */}
+                <div className={styles.footerTeamMember}>
+                  <img src="/ppl/Dhruva.jpg" alt="Dhruva Nagesh" className={styles.footerTeamMemberImage} />
+                  <a 
+                    href="https://www.linkedin.com/in/dhruva-nagesh/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className={styles.footerTeamMemberName}
+                  >
+                    Dhruva Nagesh <ArrowUpRight size={16} />
+                  </a>
+                </div>
+                
+                {/* Manit Garg */}
+                <div className={styles.footerTeamMember}>
+                  <img src="/ppl/Manit.jpg" alt="Manit Garg" className={styles.footerTeamMemberImage} />
+                  <a 
+                    href="https://www.linkedin.com/in/manitgarg/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className={styles.footerTeamMemberName}
+                  >
+                    Manit Garg <ArrowUpRight size={16} />
+                  </a>
+                </div>
+                
+                {/* Pihu Agarwal */}
+                <div className={styles.footerTeamMember}>
+                  <img src="/ppl/Pihu.jpg" alt="Pihu Agarwal" className={styles.footerTeamMemberImage} />
+                  <a 
+                    href="https://www.linkedin.com/in/pihuagarwal/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className={styles.footerTeamMemberName}
+                  >
+                    Pihu Agarwal <ArrowUpRight size={16} />
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

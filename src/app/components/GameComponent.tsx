@@ -2,10 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import styles from './GameComponent.module.css';
-// Comment out supabase import
-// import { gameSessionService, GameEvent, PlayerInput, PlayerPosition } from '@/lib/supabase/gameSession';
 
-// Define these types locally since we commented out the import
+// Define local interfaces for game data tracking
 interface GameEvent {
   session_id: string;
   event_type: string;
@@ -31,19 +29,16 @@ interface PlayerPosition {
   timestamp?: Date;
 }
 
-// Using type augmentation would require changes to other files
-// so we'll use a local interface instead
 interface GameWindow {
   gameInstance?: {
     destroy: (removeCanvas?: boolean) => void;
   } | null;
   gameInitialized?: boolean;
   initGame?: () => void;
-  gameSessionId?: string; // Add session ID to window for game to access
+  gameSessionId?: string;
   recordGameEvent?: (event: GameEvent) => void;
   recordPlayerInput?: (input: PlayerInput) => void;
   recordPlayerPosition?: (position: PlayerPosition) => void;
-  // Buffer for collecting inputs/positions to send in batches
   gameEventBuffer?: GameEvent[];
   playerInputBuffer?: PlayerInput[];
   playerPositionBuffer?: PlayerPosition[];
@@ -57,125 +52,45 @@ export default function GameComponent() {
   const [loadingState, setLoadingState] = useState<'loading' | 'loaded' | 'error'>('loading');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [logs, setLogs] = useState<{text: string, type: 'enemy-killed' | 'enemy-missed' | 'life-lost' | 'info'}[]>([]);
-  const [sessionId, setSessionId] = useState<string | null>('local-session'); // Use a static session ID
+  const [sessionId, setSessionId] = useState<string | null>('local-session');
 
-  // Create a new game session when component mounts
+  // Create a local game session when component mounts
   useEffect(() => {
-    // Comment out database functionality but keep the game session ID
     const createGameSession = async () => {
       try {
-        // Use a fixed ID for local testing
         const newSessionId = 'local-session-' + Date.now();
         setSessionId(newSessionId);
         
-        // Make session ID available to game script
         if (typeof window !== 'undefined') {
           const gameWindow = window as unknown as GameWindow;
           gameWindow.gameSessionId = newSessionId;
           
-          // Initialize buffers
+          // Initialize buffers for local storage
           gameWindow.gameEventBuffer = [];
           gameWindow.playerInputBuffer = [];
           gameWindow.playerPositionBuffer = [];
           
-          // Add methods to record game data (store locally only, don't send to DB)
+          // Add methods to record game data locally
           gameWindow.recordGameEvent = (event: GameEvent) => {
             event.session_id = newSessionId;
             gameWindow.gameEventBuffer?.push(event);
             console.log('Game event:', event);
-            
-            // Comment out the database flush
-            /*
-            // If buffer gets too large, flush it
-            if (gameWindow.gameEventBuffer && gameWindow.gameEventBuffer.length >= 10) {
-              flushGameEvents();
-            }
-            */
           };
           
           gameWindow.recordPlayerInput = (input: PlayerInput) => {
             input.session_id = newSessionId;
             gameWindow.playerInputBuffer?.push(input);
             console.log('Player input:', input);
-            
-            // Comment out the database flush
-            /*
-            // If buffer gets too large, flush it
-            if (gameWindow.playerInputBuffer && gameWindow.playerInputBuffer.length >= 20) {
-              flushPlayerInputs();
-            }
-            */
           };
           
           gameWindow.recordPlayerPosition = (position: PlayerPosition) => {
             position.session_id = newSessionId;
             gameWindow.playerPositionBuffer?.push(position);
             console.log('Player position:', position);
-            
-            // Comment out the database flush
-            /*
-            // If buffer gets too large, flush it
-            if (gameWindow.playerPositionBuffer && gameWindow.playerPositionBuffer.length >= 20) {
-              flushPlayerPositions();
-            }
-            */
           };
-          
-          // Create functions to handle buffered data (commented out Supabase)
-          /*
-          const flushGameEvents = async () => {
-            if (!gameWindow.gameEventBuffer || gameWindow.gameEventBuffer.length === 0) return;
-            
-            // Clone the buffer and clear it
-            const events = [...gameWindow.gameEventBuffer];
-            gameWindow.gameEventBuffer = [];
-            
-            // Send each event (we don't have bulk insert for events yet)
-            for (const event of events) {
-              await gameSessionService.recordEvent(event);
-            }
-          };
-          
-          const flushPlayerInputs = async () => {
-            if (!gameWindow.playerInputBuffer || gameWindow.playerInputBuffer.length === 0) return;
-            
-            // Clone the buffer and clear it
-            const inputs = [...gameWindow.playerInputBuffer];
-            gameWindow.playerInputBuffer = [];
-            
-            // Send inputs in bulk
-            await gameSessionService.recordInputsBulk(inputs);
-          };
-          
-          const flushPlayerPositions = async () => {
-            if (!gameWindow.playerPositionBuffer || gameWindow.playerPositionBuffer.length === 0) return;
-            
-            // Clone the buffer and clear it
-            const positions = [...gameWindow.playerPositionBuffer];
-            gameWindow.playerPositionBuffer = [];
-            
-            // Send positions in bulk
-            await gameSessionService.recordPositionsBulk(positions);
-          };
-          
-          // Set up flush interval
-          const flushInterval = setInterval(() => {
-            flushGameEvents();
-            flushPlayerInputs();
-            flushPlayerPositions();
-          }, 5000); // Flush every 5 seconds
-          
-          // Clean up interval on window unload
-          window.addEventListener('beforeunload', () => {
-            clearInterval(flushInterval);
-            flushGameEvents();
-            flushPlayerInputs();
-            flushPlayerPositions();
-          });
-          */
         }
       } catch (error) {
-        console.error('Error creating game session:', error);
+        console.error('Error creating local game session:', error);
       }
     };
     
@@ -298,7 +213,7 @@ export default function GameComponent() {
           console.error('Phaser loading timed out after 8 seconds');
           setErrorMessage('Failed to load game engine (timeout). Please check your network connection and try again.');
           setLoadingState('error');
-        }, 8000); // Increased from 5s to 8s
+        }, 8000);
         
         // Handle Phaser loading error
         phaser.onerror = (err) => {
@@ -359,7 +274,7 @@ export default function GameComponent() {
       
       // Set a max retry count and interval
       let retries = 0;
-      const maxRetries = 30; // Increased from 20 to 30 (15 seconds max wait)
+      const maxRetries = 30;
       
       const checkInterval = setInterval(() => {
         retries++;
@@ -369,7 +284,7 @@ export default function GameComponent() {
         if (gameWindow.gameInitialized || (gameWindow.gameInstance && document.querySelector('#game-container canvas'))) {
           console.log('Game initialization detected!');
           clearInterval(checkInterval);
-          gameWindow.gameInitialized = true; // Force flag to be set
+          gameWindow.gameInitialized = true;
           gameScriptsLoadedRef.current = true;
           setLoadingState('loaded');
         } else if (retries >= maxRetries) {
@@ -381,7 +296,7 @@ export default function GameComponent() {
       }, 500);
     };
 
-    // Increased delay to ensure DOM is ready (from 200ms to 500ms)
+    // Increased delay to ensure DOM is ready
     setTimeout(loadGame, 500);
 
     // Cleanup function
@@ -421,7 +336,7 @@ export default function GameComponent() {
           // Auto scroll to bottom
           scrollToBottom();
           
-          // Also record game event if session exists, but comment out Supabase
+          // Record game event locally if session exists
           if (sessionId && typeof window !== 'undefined') {
             const gameWindow = window as unknown as GameWindow;
             if (gameWindow.recordGameEvent) {
@@ -457,7 +372,7 @@ export default function GameComponent() {
         }
       };
       
-      // Track keyboard inputs - keep this functionality
+      // Track keyboard inputs
       const trackKeyboard = (e: KeyboardEvent) => {
         // Only track keys when game container is focused
         if (gameContainer && (document.activeElement === document.body || gameContainer.contains(document.activeElement))) {
@@ -471,7 +386,7 @@ export default function GameComponent() {
           setLogs(prev => [...prev.slice(-49), newLog]);
           scrollToBottom();
           
-          // Record keyboard input but comment out Supabase
+          // Record keyboard input locally
           if (sessionId && typeof window !== 'undefined') {
             const gameWindow = window as unknown as GameWindow;
             if (gameWindow.recordPlayerInput) {
@@ -488,7 +403,7 @@ export default function GameComponent() {
         }
       };
       
-      // Track player position periodically - keep tracking but comment out database
+      // Track player position periodically
       if (sessionId && typeof window !== 'undefined') {
         const gameWindow = window as unknown as GameWindow;
         const recordPositionInterval = setInterval(() => {
@@ -502,7 +417,7 @@ export default function GameComponent() {
             
             gameWindow.recordPlayerPosition(playerPosition);
           }
-        }, 200); // Record position every 200ms
+        }, 200);
         
         // Clean up position interval
         return () => {
@@ -510,19 +425,23 @@ export default function GameComponent() {
         };
       }
 
-      // Add global event listeners - keep these
+      // Add global event listeners
       window.addEventListener('gamelog', handleGameEvent as EventListener);
       window.addEventListener('keydown', trackKeyboard);
       
       // Expose log function to window for the game to use
-      (window as any).logGameEvent = (message: string, type: 'enemy-killed' | 'enemy-missed' | 'life-lost' | 'info') => {
-        const event = new CustomEvent('gamelog', { 
-          detail: { message, type } 
-        });
-        window.dispatchEvent(event);
+      (window as any).reactLogGameEvent = (message: string, type: 'enemy-killed' | 'enemy-missed' | 'life-lost' | 'info') => {
+        try {
+          const event = new CustomEvent('gamelog', { 
+            detail: { message, type } 
+          });
+          window.dispatchEvent(event);
+        } catch (error) {
+          console.error('Error logging game event:', error);
+        }
       };
       
-      // Comment out database saving but keep the event listening
+      // Handle game end event
       window.addEventListener('gameend', async (event: Event) => {
         const customEvent = event as CustomEvent;
         if (sessionId && customEvent.detail) {
@@ -533,7 +452,7 @@ export default function GameComponent() {
           const endTime = Date.now();
           const durationSeconds = Math.floor((endTime - startTime) / 1000);
           
-          // Log but don't update session with final results
+          // Log game results locally
           console.log('Game ended:', {
             id: sessionId,
             end_time: new Date(),
@@ -544,41 +463,6 @@ export default function GameComponent() {
             lives_remaining: lives || 0,
             game_outcome: (outcome as 'win' | 'loss' | 'quit') || 'loss'
           });
-          
-          /*
-          // Update session with final results
-          await gameSessionService.updateSession({
-            id: sessionId,
-            end_time: new Date(),
-            duration_seconds: durationSeconds,
-            final_score: score || 0,
-            enemies_killed: enemiesKilled || 0,
-            enemies_missed: enemiesMissed || 0,
-            lives_remaining: lives || 0,
-            game_outcome: (outcome as 'win' | 'loss' | 'quit') || 'loss'
-          });
-          
-          // Flush any remaining data
-          if (typeof window !== 'undefined') {
-            const gameWindow = window as unknown as GameWindow;
-            if (gameWindow.gameEventBuffer && gameWindow.gameEventBuffer.length > 0) {
-              for (const event of gameWindow.gameEventBuffer) {
-                await gameSessionService.recordEvent(event);
-              }
-              gameWindow.gameEventBuffer = [];
-            }
-            
-            if (gameWindow.playerInputBuffer && gameWindow.playerInputBuffer.length > 0) {
-              await gameSessionService.recordInputsBulk(gameWindow.playerInputBuffer);
-              gameWindow.playerInputBuffer = [];
-            }
-            
-            if (gameWindow.playerPositionBuffer && gameWindow.playerPositionBuffer.length > 0) {
-              await gameSessionService.recordPositionsBulk(gameWindow.playerPositionBuffer);
-              gameWindow.playerPositionBuffer = [];
-            }
-          }
-          */
         }
       });
       
@@ -586,7 +470,7 @@ export default function GameComponent() {
         window.removeEventListener('gamelog', handleGameEvent as EventListener);
         window.removeEventListener('keydown', trackKeyboard);
         window.removeEventListener('gameend', () => {});
-        (window as any).logGameEvent = undefined;
+        (window as any).reactLogGameEvent = undefined;
       };
     }
   }, [loadingState, sessionId]);

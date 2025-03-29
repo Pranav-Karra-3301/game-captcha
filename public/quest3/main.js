@@ -17,6 +17,14 @@ if (typeof window !== 'undefined') {
   
   // Expose the init function globally
   window.initQuestGame = initQuestGame;
+  
+  // Set a fallback timeout to ensure the flag gets set even if there are issues
+  setTimeout(() => {
+    if (!window.questGameInitialized && window.questGameInstance) {
+      console.log('Setting questGameInitialized flag via fallback timeout');
+      window.questGameInitialized = true;
+    }
+  }, 10000);
 }
 
 // Game variables - declare ONCE globally without 'let' or 'var'
@@ -38,6 +46,7 @@ window.questEnemyShootTimer = 0;
 window.questBackground = null;
 window.questGameStartTime = null; // Track when game starts
 window.mousePointer = { x: 0, y: 0 };
+window.questAssetLoadingErrors = []; // Track any asset loading errors
 
 // Audio variables
 window.questSounds = {
@@ -97,6 +106,7 @@ function initQuestGame() {
   window.questGameOverGroup = null;
   window.questMenuGroup = null;
   window.questGameStartTime = null;
+  window.questAssetLoadingErrors = [];
   
   // Enhanced game configuration with preload function
   const config = {
@@ -116,6 +126,17 @@ function initQuestGame() {
         gravity: { y: 0 },
         debug: false
       }
+    },
+    // Handle WebGL context loss gracefully
+    render: {
+      antialias: true,
+      pixelArt: false,
+      roundPixels: false
+    },
+    // Add basic scale manager
+    scale: {
+      mode: Phaser.Scale.FIT,
+      autoCenter: Phaser.Scale.CENTER_BOTH
     }
   };
   
@@ -124,9 +145,9 @@ function initQuestGame() {
     console.log('Creating Quest 3 game instance');
     window.questGameInstance = new Phaser.Game(config);
     
-    // Mark as initialized immediately so React can detect it
+    // Set the initialization flag immediately
     window.questGameInitialized = true;
-    console.log('Quest 3 game initialization flag set to true');
+    console.log('Quest 3 game initialization flag set to true immediately');
     
     // Additional check after a delay to ensure everything loaded
     setTimeout(() => {
@@ -135,39 +156,140 @@ function initQuestGame() {
         window.questGameInitialized = true;
       } else {
         console.error('Quest 3 game canvas not found after delay, initialization may have failed');
+        // But we'll still consider it initialized so React can proceed
+        window.questGameInitialized = true;
       }
-    }, 1000);
+    }, 500);
   } catch (error) {
     console.error('Failed to create Quest 3 game:', error);
     gameContainer.innerHTML = '<div style="color:white;text-align:center;padding:20px;"><h2>Error: Could not create game</h2><p>' + error.message + '</p></div>';
+    // Even though there was an error, mark as initialized so the spinner goes away
+    window.questGameInitialized = true;
   }
 }
 
 // Preload assets
 function preload() {
+  const scene = this;
   console.log('Preloading Quest 3 game assets');
   
-  // Load background
-  this.load.image('background', '/quest3/assets/images/background_5.png');
+  // Add loading progress bar
+  const progressBar = this.add.graphics();
+  const progressBox = this.add.graphics();
+  progressBox.fillStyle(0x222222, 0.8);
+  progressBox.fillRect(140, 325, 320, 50);
   
-  // Load player assets
-  this.load.image('player', '/quest3/assets/images/spaceship.png');
+  const width = this.cameras.main.width;
+  const height = this.cameras.main.height;
+  const loadingText = this.make.text({
+    x: width / 2,
+    y: height / 2 - 50,
+    text: 'Loading...',
+    style: {
+      font: '20px Arial',
+      fill: '#ffffff'
+    }
+  });
+  loadingText.setOrigin(0.5, 0.5);
   
-  // Load enemy assets
-  this.load.image('enemy1', '/quest3/assets/images/enemy.png');
-  this.load.image('enemy2', '/quest3/assets/images/enemy2.png');
+  const percentText = this.make.text({
+    x: width / 2,
+    y: height / 2 - 5,
+    text: '0%',
+    style: {
+      font: '18px Arial',
+      fill: '#ffffff'
+    }
+  });
+  percentText.setOrigin(0.5, 0.5);
   
-  // Load bullet assets
-  this.load.image('bullet', '/quest3/assets/images/bullet.png');
-  this.load.image('bullet-enemy', '/quest3/assets/images/foozle/bullet-enemy.png');
+  const assetText = this.make.text({
+    x: width / 2,
+    y: height / 2 + 50,
+    text: '',
+    style: {
+      font: '18px Arial',
+      fill: '#ffffff'
+    }
+  });
+  assetText.setOrigin(0.5, 0.5);
   
-  // Load audio assets
-  this.load.audio('bgMusic', '/quest3/assets/audio/ansimuz/space_asteroids.wav');
-  this.load.audio('shoot', '/quest3/assets/audio/ansimuz/shot_1.wav');
-  this.load.audio('enemyShoot', '/quest3/assets/audio/ansimuz/shot_2.wav');
-  this.load.audio('explosion', '/quest3/assets/audio/ansimuz/explosion.wav');
-  this.load.audio('hit', '/quest3/assets/audio/ansimuz/hit.wav');
-  this.load.audio('gameOver', '/quest3/assets/audio/ansimuz/gameover.wav');
+  // Track loading progress
+  this.load.on('progress', function (value) {
+    percentText.setText(parseInt(value * 100) + '%');
+    progressBar.clear();
+    progressBar.fillStyle(0xffffff, 1);
+    progressBar.fillRect(150, 335, 300 * value, 30);
+  });
+  
+  this.load.on('fileprogress', function (file) {
+    assetText.setText('Loading: ' + file.key);
+  });
+  
+  this.load.on('filecomplete', function (key, type, data) {
+    console.log('Loaded asset:', key);
+  });
+  
+  this.load.on('loaderror', function (file) {
+    console.error('Error loading asset:', file.key);
+    window.questAssetLoadingErrors.push(file.key);
+  });
+  
+  this.load.on('complete', function () {
+    console.log('All assets loaded');
+    progressBar.destroy();
+    progressBox.destroy();
+    loadingText.destroy();
+    percentText.destroy();
+    assetText.destroy();
+    
+    // Show any asset errors
+    if (window.questAssetLoadingErrors.length > 0) {
+      console.error('Failed to load these assets:', window.questAssetLoadingErrors);
+      const errorText = scene.make.text({
+        x: width / 2,
+        y: height / 2 - 50,
+        text: 'Some assets failed to load.\nCheck console for details.',
+        style: {
+          font: '16px Arial',
+          fill: '#ff0000'
+        }
+      });
+      errorText.setOrigin(0.5, 0.5);
+      
+      // Keep the game running anyway
+      setTimeout(() => {
+        errorText.destroy();
+      }, 5000);
+    }
+  });
+  
+  // Load assets with error handling
+  try {
+    // Load background
+    this.load.image('background', '/quest3/assets/images/background_5.png');
+    
+    // Load player assets
+    this.load.image('player', '/quest3/assets/images/spaceship.png');
+    
+    // Load enemy assets
+    this.load.image('enemy1', '/quest3/assets/images/enemy.png');
+    this.load.image('enemy2', '/quest3/assets/images/enemy2.png');
+    
+    // Load bullet assets
+    this.load.image('bullet', '/quest3/assets/images/bullet.png');
+    this.load.image('bullet-enemy', '/quest3/assets/images/foozle/bullet-enemy.png');
+    
+    // Load audio assets
+    this.load.audio('bgMusic', '/quest3/assets/audio/ansimuz/space_asteroids.wav');
+    this.load.audio('shoot', '/quest3/assets/audio/ansimuz/shot_1.wav');
+    this.load.audio('enemyShoot', '/quest3/assets/audio/ansimuz/shot_2.wav');
+    this.load.audio('explosion', '/quest3/assets/audio/ansimuz/explosion.wav');
+    this.load.audio('hit', '/quest3/assets/audio/ansimuz/hit.wav');
+    this.load.audio('gameOver', '/quest3/assets/audio/ansimuz/gameover.wav');
+  } catch (error) {
+    console.error('Error in asset preload:', error);
+  }
 }
 
 // Create scene

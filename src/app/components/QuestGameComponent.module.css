@@ -10,8 +10,15 @@
 }
 
 .questGameContainer {
-  width: 100%;
-  height: 100%;
+  width: 550px;
+  height: 700px;
+  max-width: 100%;
+  background-color: #000000;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 .loader {
@@ -55,14 +62,50 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #330000;
+  background-color: rgba(255, 0, 0, 0.1);
   color: white;
   padding: 20px;
+  border-radius: 10px;
   text-align: center;
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  max-width: 90%;
+  margin: 0 auto;
   z-index: 10;
 }
 
 .error h2 {
   color: #ff3333;
   margin-bottom: 20px;
+}
+
+.retryButton {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 15px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.retryButton:hover {
+  background-color: #3a7bbf;
+}
+
+.skipButton {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  margin-top: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.skipButton:hover {
+  background-color: #5a6268;
 } 

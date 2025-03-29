@@ -138,9 +138,19 @@ function initGame() {
 
 // Helper function to log game events
 function logGameEvent(message, type) {
-  if (window.logGameEvent) {
-    const timestamp = new Date().toLocaleTimeString();
-    window.logGameEvent(`${timestamp}: ${message}`, type);
+  // Prevent recursive calling which causes stack overflow
+  if (window.isLoggingEvent) {
+    return;
+  }
+  
+  if (window.reactLogGameEvent) {
+    try {
+      window.isLoggingEvent = true;
+      const timestamp = new Date().toLocaleTimeString();
+      window.reactLogGameEvent(`${timestamp}: ${message}`, type);
+    } finally {
+      window.isLoggingEvent = false;
+    }
   }
 }
 
@@ -574,18 +584,18 @@ function update(time, delta) {
   // Game is in playing state
   
   // Handle enemy spawning with delta time
-  if (scene.enemySpawnTimer === undefined) {
-    scene.enemySpawnTimer = 0;
+  if (this.enemySpawnTimer === undefined) {
+    this.enemySpawnTimer = 0;
   }
   
-  scene.enemySpawnTimer += deltaTime;
+  this.enemySpawnTimer += deltaTime;
   const spawnInterval = 1 / window.gameSpeed.enemySpawnRate; // time between spawns
   
-  if (scene.enemySpawnTimer >= spawnInterval) {
+  if (this.enemySpawnTimer >= spawnInterval) {
     if (window.gameState === 'playing') {
-      spawnEnemy(scene);
+      spawnEnemy(this);
     }
-    scene.enemySpawnTimer = 0; // Reset timer
+    this.enemySpawnTimer = 0; // Reset timer
   }
   
   // Handle keyboard input for movement - now using delta time

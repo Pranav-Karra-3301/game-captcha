@@ -1,71 +1,102 @@
 # 🚀 RetroCAPTCHA – Human Verification, Reimagined  
-![HackPSU](https://img.shields.io/badge/HackPSU-Spring_2025-blueviolet?style=flat-square)
+![HackPSU](https://img.shields.io/badge/Hackathon-HackPSU_2025-blueviolet?style=flat-square)
 ![JavaScript](https://img.shields.io/badge/Frontend-JavaScript-yellow?style=flat-square)
-![TensorFlow](https://img.shields.io/badge/ML-TensorFlow-orange?style=flat-square)
-![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
+![TensorFlow](https://img.shields.io/badge/AI-TensorFlow-orange?style=flat-square)
+![Node.js](https://img.shields.io/badge/Backend-Node.js-green?style=flat-square)
+![VR Ready](https://img.shields.io/badge/MetaQuest-Compatible-blue?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square)
 
 > *“Prove you're human... by saving the galaxy.”*
 
+---
+
 ## 🎮 The Problem  
-Let’s face it — old CAPTCHAs are annoying. Clicking fire hydrants and typing blurry letters? Nah.  
-We wanted to **make human verification actually fun** — so we brought back classic retro games and turned them into CAPTCHAs.
+CAPTCHAs are annoying.  
+No one wants to click blurry buses or decipher squiggly letters anymore.  
+We wanted to make human verification actually fun — so we gamified it.
+
+---
 
 ## 👾 What We Built  
-**RetroCAPTCHA** replaces boring verification with a playable **Space Shooter** game.  
-You dodge meteors, shoot enemies, and survive — all in under 30 seconds.  
-If you win, you're verified. If you're a bot? Good luck, buddy.
+**RetroCAPTCHA** replaces traditional CAPTCHAs with **playable retro mini-games**, starting with a custom-built **Space Shooter**.  
+To pass the CAPTCHA, you just need to survive. Dodge, shoot, score — boom, you’re verified.
 
-But here’s the twist:  
-We trained a **Deep Q-Network (DQN)** agent to play the same game like a bot. That way, we could design the experience to keep it secure — and still human-friendly.
+To make things extra spicy, we trained a **Deep Q-Network (DQN)** to play the game like a bot — and tuned the game so only humans can reliably pass.  
+Also, it's not just browser-based — we made it **MetaQuest-compatible**, because why not flex in VR while verifying you're human?
+
+---
 
 ## 🧠 How It Works  
-- **JavaScript** frontend with a retro-style Space Shooter  
-- **Node.js backend** validates performance (score, actions, etc.)  
-- **TensorFlow-based DQN** trained on simulated gameplay  
-- Dynamic thresholds so bots fail and humans pass  
-- Built with modularity: you can plug in new games later!
+- 🕹️ **Custom JS Space Shooter game** (Canvas API)  
+- 🌐 **Node.js/Express backend** handles user game data + logic  
+- 🧠 **DQN bot in TensorFlow** trained to simulate bot behavior  
+- 🎯 Difficulty and thresholds based on human vs bot performance  
+- 🥽 Fully compatible with **MetaQuest VR**, powered by WebXR  
+
+---
 
 ## 🔥 Features  
-- 🎮 Space Shooter mini-game CAPTCHA  
-- 🤖 AI-trained bot to simulate attacks  
-- 🔐 Anti-bot logic without killing user experience  
-- 📦 Easy to plug into any web app  
-- 🧩 Scalable system for new game-based CAPTCHAs
+- ✅ Fun, fast-paced CAPTCHA gameplay  
+- 🤖 Trained AI bot to test and tune difficulty  
+- 🧩 Modular design – add more games easily  
+- 🕶️ VR support with MetaQuest compatibility  
+- 🔌 Embeddable in websites, login forms, and more  
+- 👾 First of many: **More retro games coming soon**
 
-## 🧪 Tech Stack  
-- **Frontend:** JavaScript, HTML, CSS  
+---
+
+## 🛠️ Tech Stack  
+- **Frontend:** JavaScript, HTML, CSS (WebXR for VR support)  
 - **Backend:** Node.js, Express  
-- **ML Model:** Python, TensorFlow (DQN)  
-- **Game Engine:** Custom JS Canvas
+- **ML Model:** Python, TensorFlow (Deep Q-Learning)  
+- **VR:** WebXR + MetaQuest support  
+- **Game Engine:** Custom-built Canvas logic (no frameworks)
 
-## 🌍 Our First Game: Space Shooter  
-- Control a spaceship and survive for 30 seconds  
-- Real-time score tracking and dynamic enemies  
-- Keyboard-based controls (Arrow keys + Spacebar)  
-- Tuned to give humans a fun edge, while bots struggle
+---
 
-## 🧑‍🚀 Team RetroCAPTCHA  
+## 🌌 Game #1: Space Shooter  
+- Control a spaceship in a galactic battlefield  
+- Destroy enemies, dodge obstacles, and survive for 30 seconds  
+- Keyboard and VR controller support  
+- Human-passable, bot-breakable
+
+🎯 **More games coming soon:**  
+- 🐍 Snake  
+- 🧱 Brick Breaker  
+- 🏓 Pong  
+- And more...
+
+---
+
+## 👨‍🚀 Meet the Dream Team  
 
 | Name             | Role                          |
 |------------------|-------------------------------|
 | **Manit Garg**   | Game Dev + Backend Integration |
 | **Pranav Karra** | Machine Learning + Model Dev   |
-| **Pihu Agarwal** | Research + Logic Design        |
+| **Pihu Agarwal** | Research + UX/Game Logic       |
 | **Dhruva Nagesh**| Frontend + Game Integration    |
 
-> Built in 24 hours at **HackPSU Spring 2025** with late-night pizza and retro game nostalgia 🎮🍕
+🧠 Sleepless nights.  
+🍕 Way too much pizza.  
+💻 36 hours straight of building.  
+Made with love (and a little chaos) at **HackPSU Spring 2025**.
+
+---
 
 ## 🔮 What’s Next  
-- Add more games: Snake, Brick Breaker, Pong  
-- Train adversarial bots for stress-testing  
-- Deploy live demo + public API  
-- Mobile + accessibility support  
-- Package as npm and Flask modules for devs
+- Add more retro-style games to CAPTCHA library  
+- Improve AI agent behavior for adversarial testing  
+- Publish embeddable library + API  
+- Add user analytics & anti-fraud metrics  
+- Mobile optimization + accessibility tweaks
+
+---
 
 ## 🎥 Demo  
-Coming soon – we’ll drop a link and gameplay GIF here!
+Coming soon — gameplay GIFs, MetaQuest recording, and live deployment!
 
 ---
 
 > *Fun for humans. Frustrating for bots.*  
-> **RetroCAPTCHA** – The future of verification has a high score screen.
+> **RetroCAPTCHA** – The future of verification comes with a high score screen.

@@ -10,6 +10,7 @@ import {
   useGLTF, 
   useAnimations, 
 } from "@react-three/drei";
+import { ArrowUpRight } from "lucide-react";
 import styles from "./page.module.css";
 import ChartDashboard, { ChartDashboardItem } from '../components/ChartDashboard';
 import MetricChart from '../components/MetricChart';
@@ -319,15 +320,6 @@ export default function Home() {
         muted={isMuted}
       />
       
-      {/* HackPSU emblem */}
-      <div className={styles.hackpsuEmblem}>
-        <img 
-          src="/hackpsu emblem.png" 
-          alt="HackPSU Emblem" 
-          style={{ width: '180%', height: 'auto' }}
-        />
-      </div>
-      
       {/* Mute button */}
       <button 
         className={styles.muteButton}
@@ -403,6 +395,22 @@ export default function Home() {
       
       {/* Content overlay */}
       <div className={styles.contentOverlay}>
+        {/* Emblems container */}
+        <div className={styles.emblemContainer}>
+          <div className={styles.hackpsuEmblem}>
+            <img 
+              src="/hackpsu emblem.png" 
+              alt="HackPSU Emblem"
+            />
+          </div>
+          <div className={styles.metaquestEmblem}>
+            <img 
+              src="/MetaQuest.png" 
+              alt="MetaQuest Emblem"
+            />
+          </div>
+        </div>
+        
         <div className={styles.logoContainer}>
           <img src="/logo.webp" alt="Space Trainer Logo" className={styles.logo} />
         </div>
@@ -475,6 +483,19 @@ export default function Home() {
           <h2 className={styles.gamesTitle}>Multi-Game Support</h2>
           
           <div className={styles.gamesCarousel}>
+            {/* Left Navigation Arrow */}
+            <div 
+              className={`${styles.carouselArrow} ${styles.carouselArrowLeft}`}
+              onClick={() => {
+                const track = document.querySelector(`.${styles.carouselTrack}`);
+                if (track) {
+                  track.scrollBy({ left: -600, behavior: 'smooth' });
+                }
+              }}
+            >
+              &#10094;
+            </div>
+            
             <div className={styles.carouselTrack}>
               {/* Game Card - Space Invaders (Current) */}
               <Link href="/play" className={styles.gameLinkWrapper} prefetch={true} aria-label="Play Space Invaders">
@@ -536,7 +557,257 @@ export default function Home() {
               </div>
             </div>
             
-            {/* Removed carousel dots navigation */}
+            {/* Right Navigation Arrow */}
+            <div 
+              className={`${styles.carouselArrow} ${styles.carouselArrowRight}`}
+              onClick={() => {
+                const track = document.querySelector(`.${styles.carouselTrack}`);
+                if (track) {
+                  track.scrollBy({ left: 600, behavior: 'smooth' });
+                }
+              }}
+            >
+              &#10095;
+            </div>
+          </div>
+        </div>
+        
+        {/* HackPSU Team section */}
+        <div className={styles.teamSection} id="teamSection">
+          <h2 className={styles.teamTitle}>For The HACKPSU Team</h2>
+          
+          <div className={styles.teamGrid}>
+            {/* Pranav Karra */}
+            <div className={styles.teamMember}>
+              <div className={styles.teamImageContainer}>
+                <img 
+                  src="/ppl/Pranav8bit.png" 
+                  alt="Pranav Karra 8-bit" 
+                  className={styles.teamImage8bit} 
+                />
+                <img 
+                  src="/ppl/Pranav.jpg" 
+                  alt="Pranav Karra" 
+                  className={styles.teamImageReal} 
+                />
+              </div>
+              <h3 className={styles.teamMemberName}>Pranav Karra</h3>
+            </div>
+            
+            {/* Manit Garg */}
+            <div className={styles.teamMember}>
+              <div className={styles.teamImageContainer}>
+                <img 
+                  src="/ppl/Manit8bit.png" 
+                  alt="Manit Garg 8-bit" 
+                  className={styles.teamImage8bit} 
+                />
+                <img 
+                  src="/ppl/Manit.jpg" 
+                  alt="Manit Garg" 
+                  className={styles.teamImageReal} 
+                />
+              </div>
+              <h3 className={styles.teamMemberName}>Manit Garg</h3>
+            </div>
+            
+            {/* Dhruva Nagesh */}
+            <div className={styles.teamMember}>
+              <div className={styles.teamImageContainer}>
+                <img 
+                  src="/ppl/Dhruva8bit.png" 
+                  alt="Dhruva Nagesh 8-bit" 
+                  className={styles.teamImage8bit} 
+                />
+                <img 
+                  src="/ppl/Dhruva.jpg" 
+                  alt="Dhruva Nagesh" 
+                  className={styles.teamImageReal} 
+                />
+              </div>
+              <h3 className={styles.teamMemberName}>Dhruva Nagesh</h3>
+            </div>
+            
+            {/* Pihu Agarwal */}
+            <div className={styles.teamMember}>
+              <div className={styles.teamImageContainer}>
+                <img 
+                  src="/ppl/Pihu8bit.png" 
+                  alt="Pihu Agarwal 8-bit" 
+                  className={styles.teamImage8bit} 
+                />
+                <img 
+                  src="/ppl/Pihu.jpg" 
+                  alt="Pihu Agarwal" 
+                  className={styles.teamImageReal} 
+                />
+              </div>
+              <h3 className={styles.teamMemberName}>Pihu Agarwal</h3>
+            </div>
+          </div>
+        </div>
+        
+        {/* Technologies Used section */}
+        <div className={styles.techSection} id="techSection">
+          <h2 className={styles.techTitle}>Technologies Used</h2>
+          
+          <div className={styles.techGrid}>
+            {/* Cursor */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Cursor</h3>
+              <p className={styles.techPurpose}>For Code</p>
+            </div>
+            
+            {/* Modal */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Modal</h3>
+              <p className={styles.techPurpose}>Training</p>
+            </div>
+            
+            {/* Node.js */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Node.js</h3>
+              <p className={styles.techPurpose}>Web</p>
+            </div>
+            
+            {/* Supabase */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Supabase</h3>
+              <p className={styles.techPurpose}>Database</p>
+            </div>
+            
+            {/* Railway */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Railway</h3>
+              <p className={styles.techPurpose}>Backend</p>
+            </div>
+            
+            {/* Phaser.js */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Phaser.js</h3>
+              <p className={styles.techPurpose}>Game Engine</p>
+            </div>
+            
+            {/* Framer */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Framer</h3>
+              <p className={styles.techPurpose}>Animation</p>
+            </div>
+            
+            {/* Claude */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Claude</h3>
+              <p className={styles.techPurpose}>Component Generation</p>
+            </div>
+            
+            {/* Canva */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Canva</h3>
+              <p className={styles.techPurpose}>Ideation</p>
+            </div>
+            
+            {/* Figma */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Figma</h3>
+              <p className={styles.techPurpose}>Prototypes</p>
+            </div>
+            
+            {/* ChatGPT 4o */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>ChatGPT 4o</h3>
+              <p className={styles.techPurpose}>Image Generation</p>
+            </div>
+            
+            {/* Three.js */}
+            <div className={styles.techCard}>
+              <h3 className={styles.techName}>Three.js</h3>
+              <p className={styles.techPurpose}>3D Web Model</p>
+            </div>
+          </div>
+        </div>
+        
+        {/* Footer Section */}
+        <div className={styles.footer} id="footer">
+          <div className={styles.footerContainer}>
+            {/* Navigation Column */}
+            <div className={styles.footerNav}>
+              <h3 className={styles.footerNavTitle}>Navigation</h3>
+              <div className={styles.footerNavLinks}>
+                <a 
+                  href="#" 
+                  className={styles.footerNavLink}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  Back to Top
+                </a>
+                <Link href="/play" className={styles.footerNavLink}>Play Game</Link>
+                <Link href="/model" className={styles.footerNavLink}>Model Dashboard</Link>
+                <Link href="/data" className={styles.footerNavLink}>Data</Link>
+                <a href="/plan" className={styles.footerNavLink}>Business Plan</a>
+                <a href="http://hackpsu.org/" target="_blank" rel="noopener noreferrer" className={styles.footerNavLink}>HackPSU Website</a>
+              </div>
+            </div>
+            
+            {/* Team Column */}
+            <div className={styles.footerTeam}>
+              <h3 className={styles.footerTeamTitle}>Team</h3>
+              <div className={styles.footerTeamMembers}>
+                {/* Pranav Karra */}
+                <div className={styles.footerTeamMember}>
+                  <img src="/ppl/Pranav.jpg" alt="Pranav Karra" className={styles.footerTeamMemberImage} />
+                  <a 
+                    href="https://www.linkedin.com/in/pranav-karra-09477228b/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className={styles.footerTeamMemberName}
+                  >
+                    Pranav Karra <ArrowUpRight size={16} />
+                  </a>
+                </div>
+                
+                {/* Dhruva Nagesh */}
+                <div className={styles.footerTeamMember}>
+                  <img src="/ppl/Dhruva.jpg" alt="Dhruva Nagesh" className={styles.footerTeamMemberImage} />
+                  <a 
+                    href="https://www.linkedin.com/in/dhruva-nagesh/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className={styles.footerTeamMemberName}
+                  >
+                    Dhruva Nagesh <ArrowUpRight size={16} />
+                  </a>
+                </div>
+                
+                {/* Manit Garg */}
+                <div className={styles.footerTeamMember}>
+                  <img src="/ppl/Manit.jpg" alt="Manit Garg" className={styles.footerTeamMemberImage} />
+                  <a 
+                    href="https://www.linkedin.com/in/manitgarg/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className={styles.footerTeamMemberName}
+                  >
+                    Manit Garg <ArrowUpRight size={16} />
+                  </a>
+                </div>
+                
+                {/* Pihu Agarwal */}
+                <div className={styles.footerTeamMember}>
+                  <img src="/ppl/Pihu.jpg" alt="Pihu Agarwal" className={styles.footerTeamMemberImage} />
+                  <a 
+                    href="https://www.linkedin.com/in/pihuagarwal/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className={styles.footerTeamMemberName}
+                  >
+                    Pihu Agarwal <ArrowUpRight size={16} />
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

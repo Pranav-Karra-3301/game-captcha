@@ -240,11 +240,6 @@ export default function Home() {
                 Play Game
               </Link>
             </li>
-            <li className={activeNav === "Meta Quest" ? styles.active : ""}>
-              <Link href="/quest3" onClick={() => setActiveNav("quest3")} prefetch={true} aria-label="Go to Quest 3">
-                Quest 3
-              </Link>
-            </li>
             <li className={activeNav === "model" ? styles.active : ""}>
               <Link href="/model" onClick={() => setActiveNav("model")} prefetch={true} aria-label="View the model">
                 Model

@@ -485,20 +485,20 @@ export default function Home() {
             </div>
           </div>
         </div>
-        {/* Whiteboard Image - Full Width */}
+        {/* Whiteboard Images - Full Width */}
         <div className="w-full mt-16">
           <img 
-            src="/part2.PNG" 
-            alt="Whiteboard" 
-            style={{ width: '100%', height: 'auto' }}
+            src="/part2.png" 
+            alt="Whiteboard Part 2" 
+            style={{ width: '100%', height: 'auto', maxWidth: '1200px', margin: '0 auto', display: 'block' }}
             loading="lazy"
           />
         </div>
         <div className="w-full mt-16">
           <img 
             src="/part1.png" 
-            alt="Whiteboard" 
-            style={{ width: '100%', height: 'auto' }}
+            alt="Whiteboard Part 1" 
+            style={{ width: '100%', height: 'auto', maxWidth: '1200px', margin: '0 auto', display: 'block' }}
             loading="lazy"
           />
         </div>

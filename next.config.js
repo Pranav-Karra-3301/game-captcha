@@ -16,7 +16,7 @@ const nextConfig = {
   webpack: (config, { isServer }) => {
     // Add rule to exclude phaser.min.js from being processed by TypeScript
     config.module.rules.push({
-      test: /public[\\/]game[\\/]assets[\\/]js[\\/]phaser\.min\.js$/,
+      test: /public[\\/]assets[\\/]js[\\/]phaser\.min\.js$/,
       use: 'ignore-loader',
     });
     

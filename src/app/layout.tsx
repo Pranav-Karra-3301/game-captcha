@@ -31,8 +31,8 @@ const pressStart2P = Press_Start_2P({
 });
 
 export const metadata: Metadata = {
-  title: "Space Blaster AI Trainer",
-  description: "Train AI models by playing space shooter games",
+  title: "Game Captcha",
+  description: "im not a robot captcha by playing games",
   icons: {
     icon: "/favicon.ico",
   },

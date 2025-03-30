@@ -100,13 +100,19 @@ Built at **HackPSU Spring 2025**
 ---
 
 <p align="center">
-  <img src="public/part2.png" alt="Track Eligibility Slide" width="700"/>
+  <img src="public/3.png" alt="Hackathon Vibes and Dev Process" width="700"/>
 </p>
 
 ---
 
 <p align="center">
-  <img src="public/part1.png" alt="Hackathon Vibes and Dev Process" width="700"/>
+  <img src="public/2.png" alt="Track Eligibility Slide" width="700"/>
+</p>
+
+---
+
+<p align="center">
+  <img src="public/1.png" alt="Hackathon Vibes and Dev Process" width="700"/>
 </p>
 
 ---

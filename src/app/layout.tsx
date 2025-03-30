@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     description: "Train a model by playing Space Invader",
     images: [
       {
-        url: "https://www.iamagamernotarobot.co/preview.png",
+        url: "https://www.iamagamernotarobot.co/preview-comp.png",
         width: 1200,
         height: 630,
         alt: "Game Captcha",
@@ -55,11 +55,11 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Game Captcha",
     description: "Train a model by playing Space Invader",
-    images: ["https://www.iamagamernotarobot.co/preview.png"],
+    images: ["https://www.iamagamernotarobot.co/preview-comp.png"],
     creator: "@gamecaptcha",
   },
   other: {
-    "whatsapp:image": "https://www.iamagamernotarobot.co/preview.png",
+    "whatsapp:image": "https://www.iamagamernotarobot.co/preview-comp.png",
     "whatsapp:title": "Game Captcha",
     "whatsapp:description": "Train a model by playing Space Invader",
   }

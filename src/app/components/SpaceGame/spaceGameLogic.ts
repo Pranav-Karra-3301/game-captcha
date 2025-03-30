@@ -200,6 +200,7 @@ function preload(this: any): void {
   // Add error handling for assets
   this.load.on('loaderror', (fileObj: any) => {
     console.error('Error loading asset:', fileObj.src);
+    console.error('Asset key that failed:', fileObj.key);
     
     // Try to continue with a fallback if possible
     if (fileObj.key === 'background') {
@@ -208,31 +209,95 @@ function preload(this: any): void {
     }
   });
   
-  // Add complete event to log successful loading
-  this.load.on('complete', () => {
-    console.log('All assets loaded successfully');
-    progressBar.destroy();
-    progressBox.destroy();
-    loadingText.destroy();
-  });
-  
   // Try loading with error handling
   try {
-    // Load game assets with updated paths
-    this.load.image('background', '/game/assets/images/background_5.png');
-    this.load.image('player', '/game/assets/images/spaceship.png');
-    this.load.image('enemy1', '/game/assets/images/enemy.png');
-    this.load.image('enemy2', '/game/assets/images/enemy2.png');
-    this.load.image('bullet', '/game/assets/images/bullet.png');
-    this.load.image('bullet-enemy', '/game/assets/images/foozle/bullet-enemy.png');
+    // Add a counter to track how many assets we're expecting to load
+    let totalAssets = 0;
+    let loadedAssets = 0;
+    
+    const trackAsset = () => {
+      totalAssets++;
+    };
+    
+    // Load game assets with updated paths and fallbacks
+    trackAsset();
+    this.load.image('background', '/game/assets/images/background_5.png')
+      .on('fileerror', () => {
+        console.warn('Failed to load background.png, trying JPG instead');
+        this.load.image('background', '/game/assets/images/background_5.jpg');
+      });
+    
+    trackAsset();
+    this.load.image('player', '/game/assets/images/spaceship.png')
+      .on('fileerror', () => {
+        console.warn('Failed to load spaceship.png, trying alternative'); 
+        // Try other common formats
+        this.load.image('player', '/game/assets/images/player.png');
+      });
+    
+    trackAsset();
+    this.load.image('enemy1', '/game/assets/images/enemy.png')
+      .on('fileerror', () => {
+        console.warn('Failed to load enemy.png, trying alternative');
+        this.load.image('enemy1', '/game/assets/images/enemy.jpg');
+      });
+    
+    trackAsset();
+    this.load.image('enemy2', '/game/assets/images/enemy2.png')
+      .on('fileerror', () => {
+        console.warn('Failed to load enemy2.png, trying alternative');
+        this.load.image('enemy2', '/game/assets/images/enemy1.png');
+      });
+    
+    trackAsset();
+    this.load.image('bullet', '/game/assets/images/bullet.png')
+      .on('fileerror', () => {
+        console.warn('Failed to load bullet.png, trying alternative');
+        this.load.image('bullet', '/game/assets/images/foozle/bullet.png');
+      });
+    
+    trackAsset();
+    this.load.image('bullet-enemy', '/game/assets/images/foozle/bullet-enemy.png')
+      .on('fileerror', () => {
+        console.warn('Failed to load bullet-enemy.png, trying alternative');
+        this.load.image('bullet-enemy', '/game/assets/images/foozle/bullet.png');
+      });
     
     // Load audio assets
+    trackAsset();
     this.load.audio('bgMusic', '/game/assets/audio/ansimuz/space_asteroids.wav');
+    
+    trackAsset();
     this.load.audio('shoot', '/game/assets/audio/ansimuz/shot_1.wav');
+    
+    trackAsset();
     this.load.audio('enemyShoot', '/game/assets/audio/ansimuz/shot_2.wav');
+    
+    trackAsset();
     this.load.audio('explosion', '/game/assets/audio/ansimuz/explosion.wav');
+    
+    trackAsset();
     this.load.audio('hit', '/game/assets/audio/ansimuz/hit.wav');
-    this.load.audio('gameOver', '/game/assets/audio/ansimuz/gameover.wav');
+    
+    trackAsset();
+    this.load.audio('gameOver', '/game/assets/audio/ansimuz/Gameover.wav');
+    
+    console.log(`Attempting to load ${totalAssets} assets...`);
+    
+    // Add individual file complete handler
+    this.load.on('filecomplete', (key: string) => {
+      loadedAssets++;
+      console.log(`Loaded asset ${key} (${loadedAssets}/${totalAssets})`);
+    });
+    
+    // Add complete event to log successful loading
+    this.load.on('complete', () => {
+      console.log('All assets loaded successfully');
+      progressBar.destroy();
+      progressBox.destroy();
+      loadingText.destroy();
+    });
+    
   } catch (error) {
     console.error('Error during asset preload:', error);
     // Try to continue anyway
@@ -246,8 +311,15 @@ function create(this: any): void {
   // Try-catch for the creation to handle errors gracefully
   try {
     // Create the background as a tiled sprite
-    window.background = this.add.tileSprite(275, 350, 550, 700, 'background');
-    window.background.setScale(1);
+    try {
+      window.background = this.add.tileSprite(275, 350, 550, 700, 'background');
+      window.background.setScale(1);
+      console.log("Background created successfully");
+    } catch (bgError) {
+      console.error("Failed to create background:", bgError);
+      // Fallback to a basic rectangle if background texture fails
+      window.background = this.add.rectangle(275, 350, 550, 700, 0x000033);
+    }
     
     // Setup keyboard inputs
     window.cursors = this.input.keyboard.createCursorKeys();
@@ -264,19 +336,34 @@ function create(this: any): void {
       }
     });
     
-    // Setup audio
-    window.sounds = {
-      bgMusic: this.sound.add('bgMusic', { loop: true, volume: 0.3 }),
-      shoot: this.sound.add('shoot', { volume: 0.5 }),
-      enemyShoot: this.sound.add('enemyShoot', { volume: 0.3 }),
-      explosion: this.sound.add('explosion', { volume: 0.6 }),
-      hit: this.sound.add('hit', { volume: 0.7 }),
-      gameOver: this.sound.add('gameOver', { volume: 0.8 })
-    };
-    
-    // Play background music on menu
-    if (window.sounds.bgMusic && !window.sounds.bgMusic.isPlaying) {
-      window.sounds.bgMusic.play();
+    // Setup audio with error handling
+    window.sounds = {};
+    try {
+      window.sounds = {
+        bgMusic: this.sound.add('bgMusic', { loop: true, volume: 0.3 }),
+        shoot: this.sound.add('shoot', { volume: 0.5 }),
+        enemyShoot: this.sound.add('enemyShoot', { volume: 0.3 }),
+        explosion: this.sound.add('explosion', { volume: 0.6 }),
+        hit: this.sound.add('hit', { volume: 0.7 }),
+        gameOver: this.sound.add('gameOver', { volume: 0.8 })
+      };
+      
+      // Play background music on menu
+      if (window.sounds.bgMusic && !window.sounds.bgMusic.isPlaying) {
+        window.sounds.bgMusic.play();
+      }
+      console.log("Audio initialized successfully");
+    } catch (audioError) {
+      console.error("Failed to initialize audio:", audioError);
+      // Continue without sound
+      window.sounds = {
+        bgMusic: null,
+        shoot: null,
+        enemyShoot: null,
+        explosion: null,
+        hit: null,
+        gameOver: null
+      };
     }
     
     // Listen for p key to start game from menu
@@ -353,19 +440,28 @@ function createMenuScreen(scene: any): void {
   }).setOrigin(0.5));
   
   // Start prompt
-  window.menuGroup.add(scene.add.text(275, 450, 'Press P to Play', { 
+  const startText = scene.add.text(275, 450, 'Press P or Click Here to Play', { 
     fontSize: '24px', 
     fill: '#ffff00',
     fontStyle: 'bold'
-  }).setOrigin(0.5));
+  }).setOrigin(0.5);
   
-  // Create a blinking effect for the prompt
-  scene.tweens.add({
-    targets: window.menuGroup.getChildren()[5],
-    alpha: 0.2,
-    duration: 800,
-    yoyo: true,
-    repeat: -1
+  // Make the text interactive so it can be clicked
+  startText.setInteractive({ useHandCursor: true });
+  startText.on('pointerdown', () => {
+    if (window.gameState === 'menu' || window.gameState === 'gameover') {
+      startGame(scene);
+    }
+  });
+  
+  // Add to group
+  window.menuGroup.add(startText);
+  
+  // Add event listener for whole game area click to start
+  scene.input.once('pointerdown', () => {
+    if (window.gameState === 'menu') {
+      startGame(scene);
+    }
   });
 }
 

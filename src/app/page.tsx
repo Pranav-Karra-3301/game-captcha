@@ -434,7 +434,7 @@ export default function Home() {
         
         {/* HackPSU Team section */}
         <div className={styles.teamSection} id="teamSection">
-          <h2 className={styles.teamTitle}>For The HACKPSU Team</h2>
+          <h2 className={styles.teamTitle}>The Dream Team</h2>
           
           <div className={styles.teamGrid}>
             {/* Pranav Karra */}
@@ -509,7 +509,15 @@ export default function Home() {
         {/* Whiteboard Images - Full Width */}
         <div className="w-full mt-16">
           <img 
-            src="/part2.png" 
+            src="/3.png" 
+            alt="Whiteboard Part 0" 
+            style={{ width: '100%', height: 'auto', maxWidth: '1200px', margin: '0 auto', display: 'block' }}
+            loading="lazy"
+          />
+        </div>
+        <div className="w-full mt-16">
+          <img 
+            src="/2.png" 
             alt="Whiteboard Part 2" 
             style={{ width: '100%', height: 'auto', maxWidth: '1200px', margin: '0 auto', display: 'block' }}
             loading="lazy"
@@ -517,7 +525,7 @@ export default function Home() {
         </div>
         <div className="w-full mt-16">
           <img 
-            src="/part1.png" 
+            src="/1.png" 
             alt="Whiteboard Part 1" 
             style={{ width: '100%', height: 'auto', maxWidth: '1200px', margin: '0 auto', display: 'block' }}
             loading="lazy"

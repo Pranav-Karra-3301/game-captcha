@@ -36,6 +36,26 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.ico",
   },
+  openGraph: {
+    title: "Game Captcha",
+    description: "Train a model by playing Space Invader",
+    images: [
+      {
+        url: "/preview.png",
+        width: 1200,
+        height: 630,
+        alt: "Game Captcha",
+      }
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Game Captcha",
+    description: "Train a model by playing Space Invader",
+    images: ["/preview.png"],
+    creator: "@gamecaptcha",
+  },
 };
 
 function Loading() {

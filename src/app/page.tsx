@@ -22,6 +22,25 @@ useGLTF.preload(MODEL_PATH);
 // Model component using built-in animations
 function SpaceshipModel() {
   const group = useRef<THREE.Group>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Detect mobile devices
+  useEffect(() => {
+    const checkMobile = () => {
+      const userAgent = 
+        typeof window.navigator === "undefined" ? "" : navigator.userAgent;
+      const mobile = Boolean(
+        userAgent.match(
+          /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+        )
+      );
+      setIsMobile(mobile);
+    };
+    
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
   
   // Load the spaceship model with animations
   const { scene, animations } = useGLTF(MODEL_PATH);
@@ -68,6 +87,18 @@ function SpaceshipModel() {
       <group ref={group} scale={0.2} position={[0, 1, -5]} rotation={[-1.6, Math.PI/2, 2]}>
         <primitive object={scene} />
       </group>
+      
+      {/* Only show OrbitControls on non-mobile devices */}
+      {!isMobile && (
+        <OrbitControls 
+          enableDamping={false}
+          enableZoom={false}
+          enablePan={false}
+          rotateSpeed={0.5}
+          minDistance={5}
+          maxDistance={20}
+        />
+      )}
     </>
   );
 }
@@ -193,16 +224,6 @@ export default function Home() {
             
             {/* Spaceship model */}
             <SpaceshipModel />
-            
-            {/* Interactive controls with limited functionality */}
-            <OrbitControls 
-              enableDamping={false}
-              enableZoom={false}
-              enablePan={false}
-              rotateSpeed={0.5}
-              minDistance={5}
-              maxDistance={20}
-            />
           </Canvas>
         </Suspense>
       </div>

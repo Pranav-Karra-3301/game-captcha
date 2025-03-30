@@ -9,6 +9,15 @@ export default function PlayPage() {
   const [phaserLoaded, setPhaserLoaded] = useState(false);
   
   useEffect(() => {
+    // Redirect to the MLPSU server stack
+    const redirectTimer = setTimeout(() => {
+      window.location.href = 'http://104.39.111.30:3000/play';
+    }, 3000); // Redirect after 3 seconds
+    
+    return () => clearTimeout(redirectTimer);
+  }, []);
+  
+  useEffect(() => {
     // Check if Phaser is already loaded
     if (typeof window !== 'undefined' && (window as any).Phaser) {
       console.log("Phaser already loaded");
@@ -50,6 +59,20 @@ export default function PlayPage() {
 
   return (
     <div className={styles.container}>
+      <div style={{ 
+        padding: '20px', 
+        background: '#2a2a2a', 
+        color: '#ffffff',
+        borderRadius: '8px',
+        margin: '20px auto',
+        textAlign: 'center',
+        maxWidth: '500px',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+      }}>
+        <h2 style={{ color: '#ffffff', marginBottom: '10px' }}>Switching to local server stack</h2>
+        <p style={{ color: '#ffffff' }}>You will be redirected in a few seconds...</p>
+      </div>
+      
       {phaserLoaded ? (
         <SpaceGameComponent />
       ) : (

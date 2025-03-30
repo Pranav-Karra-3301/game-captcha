@@ -17,6 +17,13 @@ export default function SpaceGameComponent() {
   const [logs, setLogs] = useState<GameLog[]>([]);
   const [lastKeypress, setLastKeypress] = useState<string | null>(null);
   const [gameActions, setGameActions] = useState<{action: string, timestamp: string}[]>([]);
+  const [showDebug, setShowDebug] = useState<boolean>(false);
+
+  // Toggle debug mode
+  const toggleDebug = () => {
+    setShowDebug(prev => !prev);
+    console.log("Debug mode toggled:", !showDebug);
+  };
 
   useEffect(() => {
     // Reset state on component mount
@@ -199,27 +206,14 @@ export default function SpaceGameComponent() {
           // Set last input display
           setLastKeypress('Left Mouse Click');
           
-          // Check if game is in menu or game over state
-          if (window.gameState === 'menu' || window.gameState === 'gameover') {
-            // Log the click as starting the game
-            const newLog = {
-              text: `${timestamp}: Mouse click - Start game`,
-              type: 'info' as const
-            };
-            
-            setLogs(prev => [...prev.slice(-19), newLog]);
-            addGameAction('Start Game');
-          } else {
-            // Log the click as firing
-            const newLog = {
-              text: `${timestamp}: Mouse click - Fire weapon`,
-              type: 'info' as const
-            };
-            
-            setLogs(prev => [...prev.slice(-19), newLog]);
-            addGameAction('Fire Weapon');
-          }
+          // Log the click
+          const newLog = {
+            text: `${timestamp}: Mouse click - Fire weapon`,
+            type: 'info' as const
+          };
           
+          setLogs(prev => [...prev.slice(-19), newLog]);
+          addGameAction('Fire Weapon');
           scrollToBottom();
         }
       };
@@ -326,6 +320,58 @@ export default function SpaceGameComponent() {
           )}
           
           <div id="game-container" ref={gameContainerRef} className={styles.gameCanvas}></div>
+          
+          {/* Debug button - always visible */}
+          <button 
+            onClick={toggleDebug}
+            style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              zIndex: 1000,
+              background: '#333',
+              color: '#fff',
+              border: 'none',
+              padding: '5px 10px',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            {showDebug ? 'Hide Debug' : 'Show Debug'}
+          </button>
+          
+          {/* Debug overlay - only shown when debug is enabled */}
+          {showDebug && (
+            <div
+              style={{
+                position: 'absolute',
+                top: '50px',
+                right: '10px',
+                background: 'rgba(0,0,0,0.8)',
+                color: '#fff',
+                padding: '10px',
+                borderRadius: '4px',
+                zIndex: 999,
+                maxWidth: '300px',
+                maxHeight: '80%',
+                overflow: 'auto',
+                fontSize: '12px'
+              }}
+            >
+              <h3>Game Debug Info</h3>
+              <div>
+                <strong>Loading State:</strong> {loadingState}<br />
+                <strong>Game State:</strong> {typeof window !== 'undefined' ? window.gameState || 'unknown' : 'n/a'}<br />
+                <strong>Player:</strong> {typeof window !== 'undefined' && window.player ? 'Created' : 'Not Created'}<br />
+                <strong>Assets:</strong>
+                <ul style={{ margin: '5px 0', paddingLeft: '20px' }}>
+                  <li>Background: {typeof window !== 'undefined' && window.background ? 'Loaded' : 'Not Loaded'}</li>
+                  <li>Player: {typeof window !== 'undefined' && window.player ? 'Loaded' : 'Not Loaded'}</li>
+                  <li>Sound: {typeof window !== 'undefined' && window.sounds && window.sounds.bgMusic ? 'Loaded' : 'Not Loaded'}</li>
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       

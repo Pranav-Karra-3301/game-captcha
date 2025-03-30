@@ -1,124 +1,177 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './data.module.css';
 
-type PlayerPosition = {
-  id: string;
-  player_id?: string;
-  session_id?: string;
-  x?: number;
-  y?: number;
-  timestamp?: string;
+type CSVFile = {
+  name: string;
+  data: string[][];
 };
 
-// Static sample data to display instead of fetching from database
-const staticPlayerPositions: PlayerPosition[] = [
-  {
-    id: '1',
-    player_id: 'player-1',
-    session_id: 'session-123',
-    x: 145.32,
-    y: 278.54,
-    timestamp: '2023-09-15T14:22:31Z'
-  },
-  {
-    id: '2',
-    player_id: 'player-1',
-    session_id: 'session-123',
-    x: 167.89,
-    y: 278.54,
-    timestamp: '2023-09-15T14:22:33Z'
-  },
-  {
-    id: '3',
-    player_id: 'player-1',
-    session_id: 'session-123',
-    x: 198.42,
-    y: 278.54,
-    timestamp: '2023-09-15T14:22:36Z'
-  },
-  {
-    id: '4',
-    player_id: 'player-2',
-    session_id: 'session-456',
-    x: 120.75,
-    y: 278.54,
-    timestamp: '2023-09-16T09:45:12Z'
-  },
-  {
-    id: '5',
-    player_id: 'player-2',
-    session_id: 'session-456',
-    x: 154.23,
-    y: 278.54,
-    timestamp: '2023-09-16T09:45:15Z'
-  }
-];
-
 export default function DataPage() {
-  // No loading state needed since we use static data
-  const [playerPositions] = useState<PlayerPosition[]>(staticPlayerPositions);
+  const [csvFiles, setCsvFiles] = useState<CSVFile[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeFile, setActiveFile] = useState<string | null>(null);
 
-  // Function to format float values
-  const formatFloat = (value: number | undefined): string => {
-    if (value === undefined || value === null) return '-';
-    return value.toFixed(2); // Display with 2 decimal places
-  };
-
-  // Format timestamp for better readability
-  const formatTimestamp = (timestamp: string | undefined): string => {
-    if (!timestamp) return '-';
-    try {
-      const date = new Date(timestamp);
-      return date.toLocaleString();
-    } catch {
-      return timestamp;
+  useEffect(() => {
+    // Generate static data on component mount
+    const sampleFiles = generateStaticData();
+    setCsvFiles(sampleFiles);
+    setActiveFile(sampleFiles[0].name);
+    setLoading(false);
+  }, []);
+  
+  // Function to generate static data that represents CSV files
+  const generateStaticData = (): CSVFile[] => {
+    const sampleFiles: CSVFile[] = [];
+    
+    // Sample headers based on CSV structure
+    const headers = [
+      'player_id', 'timestamp', 'score', 'level', 'aliens_destroyed', 
+      'shots_fired', 'accuracy', 'time_played_seconds', 'lives_remaining', 
+      'player_x_position', 'player_movement', 'powerups_collected', 
+      'game_completed', 'device_type', 'browser', 'os', 'session_id'
+    ];
+    
+    // Generate sample files
+    for (let i = 1; i <= 20; i++) {
+      const rows = [headers];
+      
+      // Generate rows of sample data for each file
+      for (let j = 0; j < 20; j++) {
+        const row = [
+          generateRandomId(), // player_id
+          generateRandomTimestamp(), // timestamp
+          Math.floor(Math.random() * 10000).toString(), // score
+          Math.floor(Math.random() * 10 + 1).toString(), // level
+          Math.floor(Math.random() * 50).toString(), // aliens_destroyed
+          Math.floor(Math.random() * 100).toString(), // shots_fired
+          (Math.random()).toFixed(2), // accuracy
+          Math.floor(Math.random() * 600).toString(), // time_played_seconds
+          Math.floor(Math.random() * 4).toString(), // lives_remaining
+          Math.floor(Math.random() * 800).toString(), // player_x_position
+          ['left', 'right', 'stationary'][Math.floor(Math.random() * 3)], // player_movement
+          Math.floor(Math.random() * 6).toString(), // powerups_collected
+          Math.random() > 0.5 ? 'True' : 'False', // game_completed
+          ['desktop', 'mobile', 'tablet'][Math.floor(Math.random() * 3)], // device_type
+          ['chrome', 'firefox', 'safari', 'edge'][Math.floor(Math.random() * 4)], // browser
+          ['windows', 'macos', 'linux', 'ios', 'android'][Math.floor(Math.random() * 5)], // os
+          generateRandomId() // session_id
+        ];
+        
+        rows.push(row);
+      }
+      
+      sampleFiles.push({
+        name: `game_data_${i}.csv`,
+        data: rows
+      });
     }
+    
+    return sampleFiles;
   };
+  
+  // Helper function to generate random ID
+  const generateRandomId = () => {
+    return Math.random().toString(36).substring(2, 10);
+  };
+  
+  // Helper function to generate random timestamp between now and tomorrow 11am
+  const generateRandomTimestamp = () => {
+    const now = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(11, 0, 0, 0);
+    
+    const randomTime = new Date(
+      now.getTime() + Math.random() * (tomorrow.getTime() - now.getTime())
+    );
+    
+    return randomTime.toISOString();
+  };
+  
+  // Display a specific CSV file
+  const displayCSVFile = (fileName: string) => {
+    setActiveFile(fileName);
+  };
+  
+  // Find the active file data
+  const activeFileData = csvFiles.find(file => file.name === activeFile)?.data || [];
+
+  if (loading) {
+    return (
+      <div className={styles.loading}>
+        <div className={styles.loadingText}>Loading data files...</div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
       <div className={styles.scanline}></div>
+      
       <header className={styles.header}>
-        <h1 className={styles.title}>Sample Data Display</h1>
+        <h1 className={styles.title}>Game Data Files</h1>
         <div className={styles.divider}></div>
       </header>
       
-      <div className={styles.notice}>
-        <p>This is a static page showing sample player position data.</p>
-        <p>In a production environment, this would be connected to a database.</p>
+      <div className={styles.fileSelector}>
+        <div className={styles.fileList}>
+          {csvFiles.map((file) => (
+            <button
+              key={file.name}
+              className={`${styles.fileButton} ${activeFile === file.name ? styles.active : ''}`}
+              onClick={() => displayCSVFile(file.name)}
+            >
+              {file.name}
+            </button>
+          ))}
+        </div>
       </div>
       
       <div className={styles.tableContainer}>
         <div className={styles.tableWrapper}>
-          <table className={styles.table}>
-            <thead className={styles.tableHeader}>
-              <tr>
-                <th className={styles.tableHeaderCell}>ID</th>
-                <th className={styles.tableHeaderCell}>Player ID</th>
-                <th className={styles.tableHeaderCell}>Session ID</th>
-                <th className={styles.tableHeaderCell}>Position X</th>
-                <th className={styles.tableHeaderCell}>Position Y</th>
-                <th className={styles.tableHeaderCell}>Timestamp</th>
-              </tr>
-            </thead>
-            <tbody>
-              {playerPositions.map((position) => (
-                <tr 
-                  key={position.id} 
-                  className={styles.tableRow}
-                >
-                  <td className={styles.tableCell}>{position.id}</td>
-                  <td className={styles.tableCell}>{position.player_id || '-'}</td>
-                  <td className={styles.tableCell}>{position.session_id || '-'}</td>
-                  <td className={styles.tableCell}>{formatFloat(position.x)}</td>
-                  <td className={styles.tableCell}>{formatFloat(position.y)}</td>
-                  <td className={styles.tableCell}>{formatTimestamp(position.timestamp)}</td>
+          {activeFileData.length > 0 ? (
+            <table className={styles.table}>
+              <thead className={styles.tableHeader}>
+                <tr>
+                  {activeFileData[0].map((header, index) => (
+                    <th key={index} className={styles.tableHeaderCell}>
+                      {header}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {activeFileData.slice(1).map((row, rowIndex) => (
+                  <tr key={rowIndex} className={styles.tableRow}>
+                    {row.map((cell, cellIndex) => (
+                      <td key={cellIndex} className={styles.tableCell}>
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div className={styles.noData}>No data available for this file</div>
+          )}
+        </div>
+      </div>
+      
+      <div className={styles.dataStats}>
+        <div className={styles.statsItem}>
+          <span className={styles.statsLabel}>Total Files:</span>
+          <span className={styles.statsValue}>{csvFiles.length}</span>
+        </div>
+        <div className={styles.statsItem}>
+          <span className={styles.statsLabel}>Active File:</span>
+          <span className={styles.statsValue}>{activeFile}</span>
+        </div>
+        <div className={styles.statsItem}>
+          <span className={styles.statsLabel}>Rows:</span>
+          <span className={styles.statsValue}>{activeFileData.length > 0 ? activeFileData.length - 1 : 0}</span>
         </div>
       </div>
       
@@ -132,4 +185,4 @@ export default function DataPage() {
       </div>
     </div>
   );
-} 
+}

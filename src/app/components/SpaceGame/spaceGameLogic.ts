@@ -259,14 +259,8 @@ function create(this: any): void {
     
     // Add mouse click for shooting
     this.input.on('pointerdown', (pointer: any) => {
-      if (pointer.button === 0) { // Left button
-        if (window.gameState === 'playing') {
-          // In playing state, shoot
-          shoot(this);
-        } else if (window.gameState === 'menu' || window.gameState === 'gameover') {
-          // In menu or game over state, start game
-          startGame(this);
-        }
+      if (window.gameState === 'playing' && pointer.button === 0) { // Left button
+        shoot(this);
       }
     });
     
@@ -359,7 +353,7 @@ function createMenuScreen(scene: any): void {
   }).setOrigin(0.5));
   
   // Start prompt
-  window.menuGroup.add(scene.add.text(275, 450, 'Press P or Click to Play', { 
+  window.menuGroup.add(scene.add.text(275, 450, 'Press P to Play', { 
     fontSize: '24px', 
     fill: '#ffff00',
     fontStyle: 'bold'
@@ -619,7 +613,7 @@ function showGameOver(scene: any): void {
   }).setOrigin(0.5));
   
   // Instructions
-  window.gameOverGroup.add(scene.add.text(275, 350, 'Press P or Click to Play Again', { 
+  window.gameOverGroup.add(scene.add.text(275, 350, 'Press P to Play Again', { 
     fontSize: '20px', 
     fill: '#ffff00' 
   }).setOrigin(0.5));

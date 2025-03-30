@@ -199,27 +199,14 @@ export default function SpaceGameComponent() {
           // Set last input display
           setLastKeypress('Left Mouse Click');
           
-          // Check if game is in menu or game over state
-          if (window.gameState === 'menu' || window.gameState === 'gameover') {
-            // Log the click as starting the game
-            const newLog = {
-              text: `${timestamp}: Mouse click - Start game`,
-              type: 'info' as const
-            };
-            
-            setLogs(prev => [...prev.slice(-19), newLog]);
-            addGameAction('Start Game');
-          } else {
-            // Log the click as firing
-            const newLog = {
-              text: `${timestamp}: Mouse click - Fire weapon`,
-              type: 'info' as const
-            };
-            
-            setLogs(prev => [...prev.slice(-19), newLog]);
-            addGameAction('Fire Weapon');
-          }
+          // Log the click
+          const newLog = {
+            text: `${timestamp}: Mouse click - Fire weapon`,
+            type: 'info' as const
+          };
           
+          setLogs(prev => [...prev.slice(-19), newLog]);
+          addGameAction('Fire Weapon');
           scrollToBottom();
         }
       };

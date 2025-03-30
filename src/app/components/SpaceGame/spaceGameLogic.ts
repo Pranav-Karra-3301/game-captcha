@@ -257,6 +257,19 @@ function create(this: any): void {
     const pKey = this.input.keyboard.addKey((window as any).Phaser.Input.Keyboard.KeyCodes.P);
     const qKey = this.input.keyboard.addKey((window as any).Phaser.Input.Keyboard.KeyCodes.Q);
     
+    // Add mouse click for shooting
+    this.input.on('pointerdown', (pointer: any) => {
+      if (pointer.button === 0) { // Left button
+        if (window.gameState === 'playing') {
+          // In playing state, shoot
+          shoot(this);
+        } else if (window.gameState === 'menu' || window.gameState === 'gameover') {
+          // In menu or game over state, start game
+          startGame(this);
+        }
+      }
+    });
+    
     // Setup audio
     window.sounds = {
       bgMusic: this.sound.add('bgMusic', { loop: true, volume: 0.3 }),
@@ -335,7 +348,7 @@ function createMenuScreen(scene: any): void {
     fill: '#fff' 
   }).setOrigin(0.5));
   
-  window.menuGroup.add(scene.add.text(275, 330, 'SPACE: Shoot', { 
+  window.menuGroup.add(scene.add.text(275, 330, 'SPACE or CLICK: Shoot', { 
     fontSize: '16px', 
     fill: '#fff' 
   }).setOrigin(0.5));
@@ -346,7 +359,7 @@ function createMenuScreen(scene: any): void {
   }).setOrigin(0.5));
   
   // Start prompt
-  window.menuGroup.add(scene.add.text(275, 450, 'Press P to Play', { 
+  window.menuGroup.add(scene.add.text(275, 450, 'Press P or Click to Play', { 
     fontSize: '24px', 
     fill: '#ffff00',
     fontStyle: 'bold'
@@ -606,7 +619,7 @@ function showGameOver(scene: any): void {
   }).setOrigin(0.5));
   
   // Instructions
-  window.gameOverGroup.add(scene.add.text(275, 350, 'Press P to Play Again', { 
+  window.gameOverGroup.add(scene.add.text(275, 350, 'Press P or Click to Play Again', { 
     fontSize: '20px', 
     fill: '#ffff00' 
   }).setOrigin(0.5));
@@ -884,7 +897,7 @@ function spawnEnemy(scene: any): void {
   scene.enemies.push(enemy);
 }
 
-// Player shooting - now manual with spacebar
+// Player shooting - manual with spacebar or mouse click
 function shoot(scene: any): void {
   if (window.gameState !== 'playing' || !window.player || !window.player.active) return;
   
@@ -900,4 +913,4 @@ function shoot(scene: any): void {
 // Set up global window.initGame reference for backward compatibility
 if (typeof window !== 'undefined') {
   window.initGame = initGame;
-} 
+}

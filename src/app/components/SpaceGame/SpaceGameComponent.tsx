@@ -190,6 +190,40 @@ export default function SpaceGameComponent() {
         }
       };
       
+      // Track mouse clicks for shooting
+      const trackMouseClicks = (e: MouseEvent) => {
+        const gameContainer = document.getElementById('game-container');
+        if (gameContainer && gameContainer.contains(e.target as Node) && e.button === 0) {
+          const timestamp = new Date().toLocaleTimeString();
+          
+          // Set last input display
+          setLastKeypress('Left Mouse Click');
+          
+          // Check if game is in menu or game over state
+          if (window.gameState === 'menu' || window.gameState === 'gameover') {
+            // Log the click as starting the game
+            const newLog = {
+              text: `${timestamp}: Mouse click - Start game`,
+              type: 'info' as const
+            };
+            
+            setLogs(prev => [...prev.slice(-19), newLog]);
+            addGameAction('Start Game');
+          } else {
+            // Log the click as firing
+            const newLog = {
+              text: `${timestamp}: Mouse click - Fire weapon`,
+              type: 'info' as const
+            };
+            
+            setLogs(prev => [...prev.slice(-19), newLog]);
+            addGameAction('Fire Weapon');
+          }
+          
+          scrollToBottom();
+        }
+      };
+      
       // Add mouse movement listener with throttling
       let lastMoveTime = 0;
       window.addEventListener('mousemove', (e) => {
@@ -199,6 +233,9 @@ export default function SpaceGameComponent() {
           trackMouseMovement(e);
         }
       });
+      
+      // Add mouse click listener
+      window.addEventListener('mousedown', trackMouseClicks);
       
       // Expose log function to window for the game to use
       window.logGameEvent = (message: string, type: 'enemy-killed' | 'enemy-missed' | 'life-lost' | 'info') => {
@@ -215,6 +252,7 @@ export default function SpaceGameComponent() {
         window.removeEventListener('gamelog', handleGameEvent as EventListener);
         window.removeEventListener('keydown', trackKeyboard);
         window.removeEventListener('mousemove', trackMouseMovement);
+        window.removeEventListener('mousedown', trackMouseClicks);
         window.logGameEvent = undefined;
       };
     }

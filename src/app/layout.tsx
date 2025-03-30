@@ -41,21 +41,28 @@ export const metadata: Metadata = {
     description: "Train a model by playing Space Invader",
     images: [
       {
-        url: "/preview.png",
+        url: "https://www.iamagamernotarobot.co/preview.png",
         width: 1200,
         height: 630,
         alt: "Game Captcha",
       }
     ],
     type: "website",
+    siteName: "Game Captcha - I'm a Gamer Not a Robot",
+    url: "https://www.iamagamernotarobot.co",
   },
   twitter: {
     card: "summary_large_image",
     title: "Game Captcha",
     description: "Train a model by playing Space Invader",
-    images: ["/preview.png"],
+    images: ["https://www.iamagamernotarobot.co/preview.png"],
     creator: "@gamecaptcha",
   },
+  other: {
+    "whatsapp:image": "https://www.iamagamernotarobot.co/preview.png",
+    "whatsapp:title": "Game Captcha",
+    "whatsapp:description": "Train a model by playing Space Invader",
+  }
 };
 
 function Loading() {
@@ -102,6 +109,10 @@ export default function RootLayout({
             to { transform: rotate(360deg); }
           }
         `}</style>
+        
+        {/* Additional meta tags for WhatsApp preview */}
+        <meta property="og:site_name" content="Game Captcha - I'm a Gamer Not a Robot" />
+        <meta property="og:url" content="https://www.iamagamernotarobot.co" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} ${vt323.variable} ${pressStart2P.variable}`}>
         <Suspense fallback={<Loading />}>

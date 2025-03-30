@@ -345,11 +345,7 @@
 
 @media (max-width: 480px) {
   .image3dContainer {
-    top: 25vh;
-  }
-  
-  .image3d {
-    max-width: 50px;
+    display: none; /* Hide 3D icon completely on mobile */
   }
   
   /* Make navbar vertical on mobile */
@@ -382,6 +378,28 @@
     width: 90%;
     max-width: 320px;
     margin-bottom: 2rem;
+  }
+  
+  /* Fix emblem and logo positioning on mobile */
+  .emblemContainer {
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 320px;
+    padding: 8px;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .hackpsuEmblem, .metaquestEmblem {
+    width: 100px;
+  }
+  
+  /* Move logo container below emblems */
+  .logoContainer {
+    margin-top: 90px;
+    margin-bottom: 1rem;
   }
 }
 

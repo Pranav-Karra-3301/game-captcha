@@ -624,6 +624,7 @@ export default function Home() {
                 <Link href="/data" className={styles.footerNavLink}>Data</Link>
                 <a href="/plan" className={styles.footerNavLink}>Business Plan</a>
                 <a href="http://hackpsu.org/" target="_blank" rel="noopener noreferrer" className={styles.footerNavLink}>HackPSU Website</a>
+                <a href="https://github.com/Pranav-Karra-3301/game-captcha" target="_blank" rel="noopener noreferrer" className={styles.footerNavLink}>GitHub Repository</a>
               </div>
             </div>
             

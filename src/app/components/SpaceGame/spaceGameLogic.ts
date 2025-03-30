@@ -150,7 +150,7 @@ export function initGame(): void {
 // Load Phaser dynamically
 function loadPhaserDynamically(): void {
   const script = document.createElement('script');
-  script.src = '/assets/js/phaser.min.js';
+  script.src = '/game/assets/js/phaser.min.js';
   script.onload = () => {
     console.log('Dynamically loaded Phaser, retrying initialization...');
     setTimeout(initGame, 500);
@@ -219,20 +219,20 @@ function preload(this: any): void {
   // Try loading with error handling
   try {
     // Load game assets with updated paths
-    this.load.image('background', '/assets/images/background_5.png');
-    this.load.image('player', '/assets/images/spaceship.png');
-    this.load.image('enemy1', '/assets/images/enemy.png');
-    this.load.image('enemy2', '/assets/images/enemy2.png');
-    this.load.image('bullet', '/assets/images/bullet.png');
-    this.load.image('bullet-enemy', '/assets/images/foozle/bullet-enemy.png');
+    this.load.image('background', '/game/assets/images/background_5.png');
+    this.load.image('player', '/game/assets/images/spaceship.png');
+    this.load.image('enemy1', '/game/assets/images/enemy.png');
+    this.load.image('enemy2', '/game/assets/images/enemy2.png');
+    this.load.image('bullet', '/game/assets/images/bullet.png');
+    this.load.image('bullet-enemy', '/game/assets/images/foozle/bullet-enemy.png');
     
     // Load audio assets
-    this.load.audio('bgMusic', '/assets/audio/ansimuz/space_asteroids.wav');
-    this.load.audio('shoot', '/assets/audio/ansimuz/shot_1.wav');
-    this.load.audio('enemyShoot', '/assets/audio/ansimuz/shot_2.wav');
-    this.load.audio('explosion', '/assets/audio/ansimuz/explosion.wav');
-    this.load.audio('hit', '/assets/audio/ansimuz/hit.wav');
-    this.load.audio('gameOver', '/assets/audio/ansimuz/gameover.wav');
+    this.load.audio('bgMusic', '/game/assets/audio/ansimuz/space_asteroids.wav');
+    this.load.audio('shoot', '/game/assets/audio/ansimuz/shot_1.wav');
+    this.load.audio('enemyShoot', '/game/assets/audio/ansimuz/shot_2.wav');
+    this.load.audio('explosion', '/game/assets/audio/ansimuz/explosion.wav');
+    this.load.audio('hit', '/game/assets/audio/ansimuz/hit.wav');
+    this.load.audio('gameOver', '/game/assets/audio/ansimuz/gameover.wav');
   } catch (error) {
     console.error('Error during asset preload:', error);
     // Try to continue anyway

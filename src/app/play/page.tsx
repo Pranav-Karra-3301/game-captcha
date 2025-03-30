@@ -9,6 +9,7 @@ export default function PlayPage() {
   const [phaserLoaded, setPhaserLoaded] = useState(false);
   const [needsRedirect, setNeedsRedirect] = useState(false);
   
+  /*
   useEffect(() => {
     // Check if redirect is needed
     if (typeof window !== 'undefined' && !window.location.href.includes('104.39.111.30')) {
@@ -20,6 +21,7 @@ export default function PlayPage() {
       return () => clearTimeout(redirectTimer);
     }
   }, []);
+  */
   
   useEffect(() => {
     // Check if Phaser is already loaded
@@ -31,7 +33,7 @@ export default function PlayPage() {
     
     // Dynamically load Phaser
     const script = document.createElement('script');
-    script.src = '/assets/js/phaser.min.js';
+    script.src = '/game/assets/js/phaser.min.js';
     script.async = false;
     script.onload = () => {
       console.log("Phaser.js loaded successfully");

@@ -12,6 +12,10 @@
 
 > *"Prove you're human... by saving the galaxy."*
 
+<p align="center">
+  <a href="https://game-mu-inky.vercel.app"><b>▶ Play the live demo</b></a>
+</p>
+
 ---
 
 <p align="center">
@@ -133,3 +137,7 @@ Built at **HackPSU Spring 2025**
 ---
 
 **Built with pixels, caffeine, and friendship.**
+
+---
+
+Built by [Pranav Karra](https://pranavkarra.me) and the team at HackPSU Spring 2025 (Best Design winner).
